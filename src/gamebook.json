@@ -17,11 +17,11 @@
             "health": 10,
             "attacks": [
               {
-                "name": "Claw",
+                "name": "Colpo",
                 "damage": 5
               },
               {
-                "name": "Bite",
+                "name": "Schiaffo",
                 "damage": 3
               }
             ],
@@ -29,6 +29,47 @@
             "defeat_text": "Il manichino prende vita e ti sconfigge. Sei stato sconfitto.",
             "loot": "Pozione curativa"
           }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Prosegui con cautela nella caverna, notando come l'oscurità sembra avvolgerti completamente. L'umidità dell'aria e il rumore delle gocce d'acqua che cadono dall'alto ti ricordano la pericolosità di questa missione. Ad un tratto, senti un fruscio alle tue spalle...",
+      "options": [
+        {
+          "text": "Estrai la spada e ti prepari a combattere",
+          "destination": 4,
+          "combat": {
+            "name": "Serpente delle ombre",
+            "health": 15,
+            "attacks": [
+              {
+                "name": "Morso velenoso",
+                "damage": 7
+              },
+              {
+                "name": "Colpo di coda",
+                "damage": 5
+              }
+            ],
+            "victory_text": "Dopo una lotta intensa, riesci a sconfiggere il Serpente delle ombre.",
+            "defeat_text": "Il Serpente delle ombre ti colpisce con un morso letale. Sei stato sconfitto.",
+            "loot": "Pozione di antiveleno"
+          }
+        },
+        {
+          "text": "Cerca di scappare",
+          "destination": 5
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Ti avvicini al manichino per allenarti. Noti che è stato realizzato con cura per simulare un avversario vero. Pronto per l'allenamento, ti prepari a combattere.",
+      "options": [
+        {
+          "text": "Ritorna all'ingresso della caverna",
+          "destination": 1
         }
       ]
     }

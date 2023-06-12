@@ -68,9 +68,9 @@ fn main() {
             if let Ok(choice) = user_input.trim().parse::<usize>() {
                 // Verifica se la scelta è valida
                 if choice > 0 && choice <= page.options.len() {
-                    if let Some(selected_option) = page.options.remove(choice - 1) {
-                        if let Some(creature) = selected_option.creature {
-                            handle_combat(&mut player, &mut creature, &gamebook, &selected_option, &mut current_page_id);
+                    if let Some(selected_option) = page.options.get(choice - 1) {
+                        if let Some(mut creature) = selected_option.creature.clone() {
+                            handle_combat(&mut player, &mut creature, &gamebook, selected_option, &mut current_page_id);
                         }
 
                         // Cambia la pagina corrente
@@ -84,10 +84,6 @@ fn main() {
             } else {
                 println!("Input non valido. Riprova.");
             }
-
-
-
-
 
         }
 
@@ -153,8 +149,9 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
                 *current_page_id = selected_option.destination;
             } else {
                 println!("Fine del gioco. Hai vinto!");
-                return;
             }
+
+            break;
         }
 
         // Turno della creatura
