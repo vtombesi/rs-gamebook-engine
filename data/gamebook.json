@@ -3,73 +3,186 @@
   "pages": [
     {
       "id": 1,
-      "text": "Sei un valoroso guerriero nel regno di Eldoria. Hai dimostrato la tua abilità in molte battaglie e ora ti è stata assegnata una missione cruciale. La principessa Elysia è stata rapita dal malvagio stregone Morlog. Devi salvarla e riportarla sana e salva al regno di Arathor. Ti trovi ora all'ingresso della pericolosa Caverna dell'Oscurità, dove si dice che Morlog abbia stabilito la sua dimora. Sei pronto ad affrontare questa sfida?",
+      "text": "Sei Oberon, un potente mago del regno di Eldoria. La leggenda parla di una torre misteriosa, la Torre di Magnus, che si dice contenga innumerevoli tesori e antiche conoscenze magiche. Hai deciso di intraprendere questo viaggio. Il tuo primo ostacolo? Il Deserto Senza Fine, un luogo di arsura e illusioni. Sei pronto per l'avventura?",
       "options": [
         {
-          "text": "Avventurati nella Caverna dell'Oscurità",
+          "text": "Entra nel Deserto Senza Fine",
           "destination": 2
         },
         {
-          "text": "Attacca il manichino",
-          "destination": 3,
-          "combat": {
-            "name": "Manichino",
-            "health": 10,
-            "attacks": [
-              {
-                "name": "Colpo",
-                "damage": 5
-              },
-              {
-                "name": "Schiaffo",
-                "damage": 3
-              }
-            ],
-            "victory_text": "Il manichino finisce a pezzi davanti a te.",
-            "defeat_text": "Il manichino prende vita e ti sconfigge. Sei stato sconfitto.",
-            "loot": "Pozione curativa"
-          }
+          "text": "Pratica un incantesimo di preparazione",
+          "destination": 3
         }
       ]
     },
     {
       "id": 2,
-      "text": "Prosegui con cautela nella caverna, notando come l'oscurità sembra avvolgerti completamente. L'umidità dell'aria e il rumore delle gocce d'acqua che cadono dall'alto ti ricordano la pericolosità di questa missione. Ad un tratto, senti un fruscio alle tue spalle...",
+      "text": "Il calore del deserto è quasi insopportabile. La sabbia ti scorre tra le dita mentre cammini, ogni passo un promemoria della tua determinazione.",
       "options": [
         {
-          "text": "Estrai la spada e ti prepari a combattere",
-          "destination": 4,
-          "combat": {
-            "name": "Serpente delle ombre",
-            "health": 15,
-            "attacks": [
-              {
-                "name": "Morso velenoso",
-                "damage": 7
-              },
-              {
-                "name": "Colpo di coda",
-                "damage": 5
-              }
-            ],
-            "victory_text": "Dopo una lotta intensa, riesci a sconfiggere il Serpente delle ombre.",
-            "defeat_text": "Il Serpente delle ombre ti colpisce con un morso letale. Sei stato sconfitto.",
-            "loot": "Pozione di antiveleno"
-          }
+          "text": "Usa un incantesimo per proteggerti dal calore",
+          "destination": 4
         },
         {
-          "text": "Cerca di scappare",
+          "text": "Continua a camminare, confidando nella tua resistenza",
           "destination": 5
         }
       ]
     },
     {
       "id": 3,
-      "text": "Ti avvicini al manichino per allenarti. Noti che è stato realizzato con cura per simulare un avversario vero. Pronto per l'allenamento, ti prepari a combattere.",
+      "text": "Ti concentri, il tuo bastone magico brilla mentre prepari il tuo incantesimo. La tua energia si infonde nel terreno, pronta a rispondere alla tua chiamata quando ne avrai bisogno.",
       "options": [
         {
-          "text": "Ritorna all'ingresso della caverna",
-          "destination": 1
+          "text": "Entra nel Deserto Senza Fine",
+          "destination": 2
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "Con un gesto del tuo bastone, una fresca brezza inizia a soffiare attorno a te, alleviando il calore del deserto. Cammini con più facilità, ma ti accorgi di non essere solo...",
+      "options": [
+        {
+          "text": "Affronta la creatura",
+          "destination": 6,
+          "combat": {
+            "name": "Djin del Deserto",
+            "health": 25,
+            "attacks": [
+              {
+                "name": "Lancio di sabbia",
+                "damage": 7
+              },
+              {
+                "name": "Colpo di vento",
+                "damage": 5
+              }
+            ],
+            "victory_text": "Dopo una dura battaglia, sconfiggi il Djin del Deserto e trovi una chiave rossa tra i suoi resti.",
+            "defeat_text": "Il Djin del Deserto ti sconfigge con un potente colpo. Sei stato sconfitto.",
+            "loot": "Chiave Rossa"
+          }
+        },
+        {
+          "text": "Cerca di evitarla",
+          "destination": 7
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "Continui a camminare, nonostante il calore e la sete. Presto ti accorgi di non essere solo...",
+      "options": [
+        {
+          "text": "Affronta la creatura",
+          "destination": 6,
+          "combat": {
+            "name": "Djin del Deserto",
+            "health": 25,
+            "attacks": [
+              {
+                "name": "Lancio di sabbia",
+                "damage": 7
+              },
+              {
+                "name": "Colpo di vento",
+                "damage": 5
+              }
+            ],
+            "victory_text": "Dopo una dura battaglia, sconfiggi il Djin del Deserto e trovi una chiave rossa tra i suoi resti.",
+            "defeat_text": "Il Djin del Deserto ti sconfigge con un potente colpo. Sei stato sconfitto.",
+            "loot": "Chiave Rossa"
+          }
+        },
+        {
+          "text": "Cerca di evitarla",
+          "destination": 7
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "Hai sconfitto la creatura e prosegui il tuo viaggio...",
+      "options": [
+        {
+          "text": "Cerca un luogo dove riposare",
+          "destination": 8
+        },
+        {
+          "text": "Continua a viaggiare nonostante la stanchezza",
+          "destination": 9
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "text": "Eviti con successo la creatura e prosegui il tuo viaggio...",
+      "options": [
+        {
+          "text": "Cerca un luogo dove riposare",
+          "destination": 8
+        },
+        {
+          "text": "Continua a viaggiare nonostante la stanchezza",
+          "destination": 9
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "text": "Trovi un luogo riparato dove riposare e ricaricare le tue energie magiche...",
+      "options": [
+        {
+          "text": "Riposa",
+          "destination": 10
+        },
+        {
+          "text": "Prosegui nonostante il riposo",
+          "destination": 9
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "text": "Continui a viaggiare nel deserto, alla fine scorgi la forma della Torre di Magnus. Arrivi di fronte ad una porta rossa...",
+      "options": [
+        {
+          "text": "Usa la chiave rossa",
+          "destination": 11
+        },
+        {
+          "text": "Cerca un altro ingresso",
+          "destination": 12
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "text": "Dopo un riposo ristoratore, riprendi il tuo viaggio e alla fine scorgi la forma della Torre di Magnus. Arrivi di fronte ad una porta rossa...",
+      "options": [
+        {
+          "text": "Usa la chiave rossa",
+          "destination": 11
+        },
+        {
+          "text": "Cerca un altro ingresso",
+          "destination": 12
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "text": "La chiave rossa gira nella serratura con un clic. La porta si apre e vedi davanti a te un oggetto brillante - il Liuto della Potenza...",
+      "options": []
+    },
+    {
+      "id": 12,
+      "text": "Dopo aver girato attorno alla torre, non trovi altri ingressi. Ti ritrovi di nuovo di fronte alla porta rossa...",
+      "options": [
+        {
+          "text": "Usa la chiave rossa",
+          "destination": 11
         }
       ]
     }
