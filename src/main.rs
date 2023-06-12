@@ -171,7 +171,7 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
 }
 
 fn load_gamebook() -> GameBook {
-    let path = Path::new("./src/gamebook.json");
+    let path = Path::new("./data/gamebook.json");
     let file = File::open(path).expect("Failed to open file");
 
     serde_json::from_reader(file).expect("Failed to parse JSON")
