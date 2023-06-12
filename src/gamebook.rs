@@ -2,6 +2,7 @@
 
 use serde::{Deserialize};
 use rand::Rng;
+use crate::item::Item;
 
 impl Creature {
     pub fn take_damage(&mut self, damage: i32) {
@@ -44,7 +45,7 @@ pub struct Creature {
     pub victory_text: String,
     #[serde(rename = "defeat_text")]
     pub defeat_text: String,
-    pub loot: Option<String>,
+    pub loot: Option<Vec<Item>>,
 }
 
 #[derive(Debug, Deserialize, Clone)]

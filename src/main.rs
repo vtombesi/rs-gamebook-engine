@@ -2,6 +2,9 @@ mod gamebook;
 mod player;
 mod utils;
 mod inventory;
+mod effect;
+mod item;
+mod logger;
 
 use player::Player;
 use utils::{load_gamebook, handle_combat, read_user_input, save_game};
@@ -28,7 +31,7 @@ fn main() {
 
         if let Some(page) = current_page.cloned() {
             // Stampa il testo della pagina corrente
-            println!("{}", page.text);
+            logger::log_narration(format!("{}", page.text));
             println!();
             println!();
 
@@ -39,13 +42,13 @@ fn main() {
 
             // Stampa le opzioni disponibili
             for (index, option) in page.options.iter().enumerate() {
-                println!("{}. {}", index + 1, option.text);
+                logger::log_choice(format!("{}. {}", index + 1, option.text));
             }
 
             // Stampa le opzioni globali
-            println!("X. Esci dal gioco");
-            println!("S. Salva posizione");
-            println!("I. Guarda l'inventario");
+            logger::log_choice("X. Esci dal gioco");
+            logger::log_choice("S. Salva posizione");
+            logger::log_choice("I. Guarda l'inventario");
 
             // Leggi l'input dell'utente
             let user_input = read_user_input();

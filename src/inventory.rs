@@ -1,5 +1,7 @@
+use crate::item::{Item};
+
 pub struct Inventory {
-    pub items: Vec<String>,
+    pub items: Vec<Item>,
 }
 
 impl Inventory {
@@ -24,8 +26,9 @@ impl Inventory {
         }
     }
 
-    pub fn pickup(&mut self, item_name: String) {
-        self.items.push(item_name.clone());
-        println!("Hai raccolto l'oggetto {}.", item_name);
+    pub fn pickup(&mut self, item: Item) {
+        let cloned_item = item.clone(); // Clona l'oggetto item
+        self.items.push(cloned_item);
+        println!("Hai raccolto l'oggetto {}.", item.name);
     }
 }

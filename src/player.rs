@@ -1,4 +1,5 @@
 use crate::inventory::Inventory;
+use crate::item::Item;
 
 pub struct Player {
     pub health: i32,
@@ -19,10 +20,9 @@ impl Player {
         // Dopo aver utilizzato l'oggetto, potresti voler aggiungere effetti specifici dell'oggetto, come curare il giocatore
     }
 
-    pub fn pickup(&mut self, item_name: String) {
-        self.inventory.pickup(item_name);
+    pub fn pickup(&mut self, item: Item) {
+        self.inventory.pickup(item);
     }
-
     pub fn take_damage(&mut self, damage: i32) {
         self.health -= damage;
     }

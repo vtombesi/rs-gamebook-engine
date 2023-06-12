@@ -61,7 +61,20 @@
             ],
             "victory_text": "Dopo una dura battaglia, sconfiggi il Djin del Deserto e trovi una chiave rossa tra i suoi resti.",
             "defeat_text": "Il Djin del Deserto ti sconfigge con un potente colpo. Sei stato sconfitto.",
-            "loot": "Chiave Rossa"
+            "loot": [
+              {
+                "name": "Chiave Rossa",
+                "type": "Quest",
+                "quantity": 1,
+                "effect": null
+              },
+              {
+                "name": "Pozione",
+                "type": "Usable",
+                "quantity": 3,
+                "effect": null
+              }
+            ]
           }
         },
         {
@@ -92,7 +105,20 @@
             ],
             "victory_text": "Dopo una dura battaglia, sconfiggi il Djin del Deserto e trovi una chiave rossa tra i suoi resti.",
             "defeat_text": "Il Djin del Deserto ti sconfigge con un potente colpo. Sei stato sconfitto.",
-            "loot": "Chiave Rossa"
+            "loot": [
+              {
+                "name": "Chiave Rossa",
+                "type": "Quest",
+                "quantity": 1,
+                "effect": null
+              },
+              {
+                "name": "Pozione",
+                "type": "Usable",
+                "quantity": 3,
+                "effect": null
+              }
+            ]
           }
         },
         {

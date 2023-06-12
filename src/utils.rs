@@ -3,6 +3,7 @@ use std::io::{self};
 use std::path::Path;
 use std::fs::write;
 use serde_json::json;
+use crate::item::{Item, ItemType};
 
 use super::player::Player;
 use super::gamebook::{GameBook, Creature, Choice};
@@ -60,10 +61,10 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
 
         if creature.health <= 0 {
             println!("{}", creature.victory_text);
-            if let Some(loot) = &creature.loot {
-                println!("Hai ottenuto: {}", loot);
-                player.pickup(loot.to_string());
-                // Aggiungi qui la logica per gestire il loot
+            if let Some(loot) = selected_option.creature.as_ref().and_then(|creature| creature.loot.as_ref()) {
+                for item in loot {
+                    player.pickup(item.clone());
+                }
             }
 
             let current_page = gamebook.pages.iter().find(|p| p.id == selected_option.destination);
