@@ -175,15 +175,20 @@ pub fn handle_loot(player: &mut Player, loot: &[Item]) {
 
 pub fn parse_initial_equipment(gamebook: &mut GameBook) {
     if let Some(player_data) = &mut gamebook.player {
-        if let Some(stats_data) = player_data.stats {
-            let stats: Stats = stats_data;
-            player_data.stats = stats;
+
+        let stats_data = player_data.stats; // stats_data è di tipo `Stats`
+        player_data.stats = stats_data;
+
+        if let Some(armour_data) = &player_data.equipment.armour {
+            // ora armour_data è di tipo `Item`
+            // il tuo codice qui...
         }
 
-        if let Some(equipment_data) = player_data.equipment {
-            let equipment: Equipment = equipment_data;
-            player_data.equipment = equipment;
+        if let Some(weapon_data) = &player_data.equipment.weapon {
+            // ora weapon_data è di tipo `Item`
+            // il tuo codice qui...
         }
+
     }
 }
 
