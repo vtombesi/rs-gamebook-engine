@@ -81,13 +81,13 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
                 println!("{}", page.text);
                 *current_page_id = selected_option.destination;
             } else {
-                println!("Fine del gioco. Hai vinto!");
+                println!("End of the game. You won!");
             }
 
             break;
         }
 
-        // Turno della creatura
+        // Creature's turn
         let damage = creature.attack();
         player.take_damage(damage);
         logger::log_damage(format!("The {} attacks you and deals {} damage points.", creature.creature_name, damage));
@@ -110,9 +110,9 @@ pub fn read_user_input() -> String {
 }
 
 pub fn save_game(player: &Player, page_id: usize) {
-    println!("Seleziona uno slot di salvataggio (1, 2 o 3):");
+    println!("Select a save slot (1, 2, or 3):");
     let mut save_slot = String::new();
-    std::io::stdin().read_line(&mut save_slot).expect("Errore nella lettura dell'input");
+    std::io::stdin().read_line(&mut save_slot).expect("Error reading input");
 
     let save_slot = save_slot.trim();
     let save_file_name = match save_slot {
@@ -120,7 +120,7 @@ pub fn save_game(player: &Player, page_id: usize) {
         "2" => "saves/save2.json",
         "3" => "saves/save3.json",
         _ => {
-            println!("Slot di salvataggio non valido. Il gioco verrà salvato in 'savegame.json'.");
+            println!("Invalid save slot. The game will be saved in 'savegame.json'.");
             "saves/savegame.json"
         }
     };
@@ -131,7 +131,7 @@ pub fn save_game(player: &Player, page_id: usize) {
         "page_id": page_id,
     });
 
-    write(save_file_name, save_data.to_string()).expect("Impossibile scrivere il file di salvataggio");
+    write(save_file_name, save_data.to_string()).expect("Unable to write save file");
 }
 
 pub fn load_game(slot: usize) -> Option<(Player, usize)> {

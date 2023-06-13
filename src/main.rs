@@ -10,50 +10,51 @@ use player::Player;
 use utils::{load_gamebook, handle_combat, read_user_input, save_game};
 
 fn main() {
-    // Carica il file gamebook.json
+    // Load the gamebook.json file
     let gamebook = load_gamebook();
 
-    // Inizia dalla pagina di start_page
+    // Start from the start_page page
     let mut current_page_id = gamebook.start_page;
 
-    // Crea il giocatore
+    // Create the player
     let mut player = Player::new();
 
     print!("{}[2J", 27 as char);
 
-// Loop principale
+// Main loop
     loop {
-        // Svuota il terminale
+        // Clear the terminal
         print!("{}[2J", 27 as char);
 
-        // Trova la pagina corrente
+        // Find the current page
         let current_page = gamebook.pages.iter().find(|p| p.id == current_page_id);
 
         if let Some(page) = current_page.cloned() {
-            // Stampa il testo della pagina corrente
+            // Print the text of the current page
             logger::log_narration(format!("{}", page.text));
             println!();
             println!();
 
-            // Se non ci sono opzioni, esci dal loop
+            // If there are no options, exit the loop
             if page.options.is_empty() {
                 break;
             }
 
-            // Stampa le opzioni disponibili
+            // Print the available options
             for (index, option) in page.options.iter().enumerate() {
                 logger::log_choice(format!("{}. {}", index + 1, option.text));
             }
 
-            // Stampa le opzioni globali
-            logger::log_choice("X. Esci dal gioco");
-            logger::log_choice("S. Salva posizione");
-            logger::log_choice("I. Guarda l'inventario");
+            // Print global options
+            println!();
+            logger::log_choice("I. Check Inventory");
+            logger::log_choice("S. Save");
+            logger::log_choice("X. Exit game");
 
-            // Leggi l'input dell'utente
+            // Read user input
             let user_input = read_user_input();
 
-            // Verifica se l'input dell'utente è una stringa
+            // Check if the user input is a string
             if user_input.trim().to_uppercase() == "X" {
                 std::process::exit(0);
             } else if user_input.trim().to_uppercase() == "S" {
@@ -62,43 +63,43 @@ fn main() {
             } else if user_input.trim().to_uppercase() == "I" {
                 loop {
                     player.inventory.show();
-                    println!("Seleziona un oggetto da usare o digita T per tornare al gioco.");
+                    println!("Select an item to use or type T to return to the game.");
 
                     let inventory_input = read_user_input();
 
                     if inventory_input.trim().to_uppercase() == "T" {
-                        // Torna al gioco
+                        // Return to the game
                         break;
                     } else if let Ok(item_choice) = inventory_input.trim().parse::<usize>() {
-                        // Tenta di usare l'oggetto scelto
+                        // Try to use the chosen item
                         if let Err(e) = player.inventory.use_item(item_choice) {
-                            println!("Errore nell'uso dell'oggetto: {}", e);
+                            println!("Error using item: {}", e);
                         }
                     } else {
-                        println!("Input non valido. Riprova.");
+                        println!("Invalid input. Please try again.");
                     }
                 }
                 continue;
             }
 
             if let Ok(choice) = user_input.trim().parse::<usize>() {
-                // Verifica se la scelta è valida
+                // Check if the choice is valid
                 if choice > 0 && choice <= page.options.len() {
                     if let Some(selected_option) = page.options.get(choice - 1) {
                         if let Some(mut creature) = selected_option.creature.clone() {
                             handle_combat(&mut player, &mut creature, &gamebook, selected_option, &mut current_page_id);
                         }
 
-                        // Cambia la pagina corrente
+                        // Change the current page
                         current_page_id = selected_option.destination;
                     } else {
-                        println!("Opzione non valida. Riprova.");
+                        println!("Invalid option. Please try again.");
                     }
                 } else {
-                    println!("Scelta non valida. Riprova.");
+                    println!("Invalid choice. Please try again.");
                 }
             } else {
-                println!("Input non valido. Riprova.");
+                println!("Invalid input. Please try again.");
             }
 
         }

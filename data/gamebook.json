@@ -3,73 +3,73 @@
   "pages": [
     {
       "id": 1,
-      "text": "Sei Oberon, un potente mago del regno di Eldoria. La leggenda parla di una torre misteriosa, la Torre di Magnus, che si dice contenga innumerevoli tesori e antiche conoscenze magiche. Hai deciso di intraprendere questo viaggio. Il tuo primo ostacolo? Il Deserto Senza Fine, un luogo di arsura e illusioni. Sei pronto per l'avventura?",
+      "text": "You are Oberon, a powerful wizard of the kingdom of Eldoria. Legend speaks of a mysterious tower, the Tower of Magnus, said to contain countless treasures and ancient magical knowledge. You have decided to undertake this journey. Your first obstacle? The Endless Desert, a place of scorch and illusions. Are you ready for adventure?",
       "options": [
         {
-          "text": "Entra nel Deserto Senza Fine",
+          "text": "Enter the Endless Desert",
           "destination": 2
         },
         {
-          "text": "Pratica un incantesimo di preparazione",
+          "text": "Cast a preparatory spell",
           "destination": 3
         }
       ]
     },
     {
       "id": 2,
-      "text": "Il calore del deserto è quasi insopportabile. La sabbia ti scorre tra le dita mentre cammini, ogni passo un promemoria della tua determinazione.",
+      "text": "The desert heat is almost unbearable. The sand flows through your fingers as you walk, each step a reminder of your determination.",
       "options": [
         {
-          "text": "Usa un incantesimo per proteggerti dal calore",
+          "text": "Use a spell to protect yourself from the heat",
           "destination": 4
         },
         {
-          "text": "Continua a camminare, confidando nella tua resistenza",
+          "text": "Continue walking, trusting in your endurance",
           "destination": 5
         }
       ]
     },
     {
       "id": 3,
-      "text": "Ti concentri, il tuo bastone magico brilla mentre prepari il tuo incantesimo. La tua energia si infonde nel terreno, pronta a rispondere alla tua chiamata quando ne avrai bisogno.",
+      "text": "You concentrate, your magic staff glows as you prepare your spell. Your energy infuses the ground, ready to respond to your call when needed.",
       "options": [
         {
-          "text": "Entra nel Deserto Senza Fine",
+          "text": "Enter the Endless Desert",
           "destination": 2
         }
       ]
     },
     {
       "id": 4,
-      "text": "Con un gesto del tuo bastone, una fresca brezza inizia a soffiare attorno a te, alleviando il calore del deserto. Cammini con più facilità, ma ti accorgi di non essere solo...",
+      "text": "With a gesture of your staff, a cool breeze begins to blow around you, easing the desert heat. You walk more easily, but you realize you're not alone...",
       "options": [
         {
-          "text": "Affronta la creatura",
+          "text": "Confront the creature",
           "destination": 6,
           "combat": {
-            "name": "Djin del Deserto",
+            "name": "Desert Djinn",
             "health": 25,
             "attacks": [
               {
-                "name": "Lancio di sabbia",
+                "name": "Sand Throw",
                 "damage": 7
               },
               {
-                "name": "Colpo di vento",
+                "name": "Wind Strike",
                 "damage": 5
               }
             ],
-            "victory_text": "Dopo una dura battaglia, sconfiggi il Djin del Deserto e trovi una chiave rossa tra i suoi resti.",
-            "defeat_text": "Il Djin del Deserto ti sconfigge con un potente colpo. Sei stato sconfitto.",
+            "victory_text": "After a tough battle, you defeat the Desert Djinn and find a red key among its remains.",
+            "defeat_text": "The Desert Djinn defeats you with a powerful blow. You have been defeated.",
             "loot": [
               {
-                "name": "Chiave Rossa",
+                "name": "Red Key",
                 "type": "Quest",
                 "quantity": 1,
                 "effect": null
               },
               {
-                "name": "Pozione",
+                "name": "Potion",
                 "type": "Usable",
                 "quantity": 3,
                 "effect": null
@@ -78,42 +78,42 @@
           }
         },
         {
-          "text": "Cerca di evitarla",
+          "text": "Try to avoid it",
           "destination": 7
         }
       ]
     },
     {
       "id": 5,
-      "text": "Continui a camminare, nonostante il calore e la sete. Presto ti accorgi di non essere solo...",
+      "text": "You continue walking, despite the heat and thirst. Soon you realize you're not alone...",
       "options": [
         {
-          "text": "Affronta la creatura",
+          "text": "Confront the creature",
           "destination": 6,
           "combat": {
-            "name": "Djin del Deserto",
+            "name": "Desert Djinn",
             "health": 25,
             "attacks": [
               {
-                "name": "Lancio di sabbia",
+                "name": "Sand Throw",
                 "damage": 7
               },
               {
-                "name": "Colpo di vento",
+                "name": "Wind Strike",
                 "damage": 5
               }
             ],
-            "victory_text": "Dopo una dura battaglia, sconfiggi il Djin del Deserto e trovi una chiave rossa tra i suoi resti.",
-            "defeat_text": "Il Djin del Deserto ti sconfigge con un potente colpo. Sei stato sconfitto.",
+            "victory_text": "After a tough battle, you defeat the Desert Djinn and find a red key among its remains.",
+            "defeat_text": "The Desert Djinn defeats you with a powerful blow. You have been defeated.",
             "loot": [
               {
-                "name": "Chiave Rossa",
+                "name": "Red Key",
                 "type": "Quest",
                 "quantity": 1,
                 "effect": null
               },
               {
-                "name": "Pozione",
+                "name": "Potion",
                 "type": "Usable",
                 "quantity": 3,
                 "effect": null
@@ -122,92 +122,92 @@
           }
         },
         {
-          "text": "Cerca di evitarla",
+          "text": "Try to avoid it",
           "destination": 7
         }
       ]
     },
     {
       "id": 6,
-      "text": "Hai sconfitto la creatura e prosegui il tuo viaggio...",
+      "text": "You defeated the creature and continue your journey...",
       "options": [
         {
-          "text": "Cerca un luogo dove riposare",
+          "text": "Look for a place to rest",
           "destination": 8
         },
         {
-          "text": "Continua a viaggiare nonostante la stanchezza",
+          "text": "Continue traveling despite fatigue",
           "destination": 9
         }
       ]
     },
     {
       "id": 7,
-      "text": "Eviti con successo la creatura e prosegui il tuo viaggio...",
+      "text": "You successfully avoid the creature and continue your journey...",
       "options": [
         {
-          "text": "Cerca un luogo dove riposare",
+          "text": "Look for a place to rest",
           "destination": 8
         },
         {
-          "text": "Continua a viaggiare nonostante la stanchezza",
+          "text": "Continue traveling despite fatigue",
           "destination": 9
         }
       ]
     },
     {
       "id": 8,
-      "text": "Trovi un luogo riparato dove riposare e ricaricare le tue energie magiche...",
+      "text": "You find a sheltered place to rest and recharge your magical energies...",
       "options": [
         {
-          "text": "Riposa",
+          "text": "Rest",
           "destination": 10
         },
         {
-          "text": "Prosegui nonostante il riposo",
+          "text": "Proceed despite the rest",
           "destination": 9
         }
       ]
     },
     {
       "id": 9,
-      "text": "Continui a viaggiare nel deserto, alla fine scorgi la forma della Torre di Magnus. Arrivi di fronte ad una porta rossa...",
+      "text": "You continue to travel in the desert, in the end you spot the shape of the Tower of Magnus. You arrive in front of a red door...",
       "options": [
         {
-          "text": "Usa la chiave rossa",
+          "text": "Use the red key",
           "destination": 11
         },
         {
-          "text": "Cerca un altro ingresso",
+          "text": "Look for another entrance",
           "destination": 12
         }
       ]
     },
     {
       "id": 10,
-      "text": "Dopo un riposo ristoratore, riprendi il tuo viaggio e alla fine scorgi la forma della Torre di Magnus. Arrivi di fronte ad una porta rossa...",
+      "text": "After a restorative rest, you resume your journey and in the end you spot the shape of the Tower of Magnus. You arrive in front of a red door...",
       "options": [
         {
-          "text": "Usa la chiave rossa",
+          "text": "Use the red key",
           "destination": 11
         },
         {
-          "text": "Cerca un altro ingresso",
+          "text": "Look for another entrance",
           "destination": 12
         }
       ]
     },
     {
       "id": 11,
-      "text": "La chiave rossa gira nella serratura con un clic. La porta si apre e vedi davanti a te un oggetto brillante - il Liuto della Potenza...",
+      "text": "The red key turns in the lock with a click. The door opens and you see before you a shining object - the Lute of Power...",
       "options": []
     },
     {
       "id": 12,
-      "text": "Dopo aver girato attorno alla torre, non trovi altri ingressi. Ti ritrovi di nuovo di fronte alla porta rossa...",
+      "text": "After circling the tower, you find no other entrances. You find yourself again in front of the red door...",
       "options": [
         {
-          "text": "Usa la chiave rossa",
+          "text": "Use the red key",
           "destination": 11
         }
       ]
