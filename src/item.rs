@@ -26,7 +26,11 @@ pub struct Item {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum ItemType {
     Usable,
-    Equipable,
+    Armour,
+    Weapon,
+    Shield,
+    Necklace,
+    Ring,
     SomeType,
     Quest,
     // Aggiungi qui altri tipi di oggetti se necessario

@@ -1,5 +1,8 @@
 use crate::item::{Item};
+use crate::logger;
+use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Deserialize)]
 pub struct Inventory {
     pub items: Vec<Item>,
 }
@@ -29,6 +32,10 @@ impl Inventory {
     pub fn pickup(&mut self, item: Item) {
         let cloned_item = item.clone(); // Clone the item object
         self.items.push(cloned_item);
-        println!("You have picked up the item {}.", item.name);
+        if item.quantity == 1 {
+            logger::log_loot_item(format!("You have picked up a {}.", item.name));
+        } else {
+            logger::log_loot_item(format!("You have picked up some {}s(x{}).", item.name, item.quantity));
+        }
     }
 }

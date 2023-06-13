@@ -21,3 +21,7 @@ pub fn log_narration<T: std::fmt::Display>(message: T) {
 pub fn log_choice<T: std::fmt::Display>(message: T) {
     println!("\x1b[37m{}\x1b[0m", message); // Stampa in grigio
 }
+
+pub fn log_loot_item<T: std::fmt::Display>(message: T) {
+    println!("\x1b[32m+ {}\x1b[0m", message); // Stampa in verde con prefisso "+ "
+}

@@ -4,11 +4,16 @@ mod utils;
 mod inventory;
 mod effect;
 mod item;
+mod equipment;
+mod stats;
 mod logger;
+
+use crate::equipment::Equipment;
+use crate::stats::Stats;
 
 use player::Player;
 use utils::{load_gamebook, handle_combat, read_user_input, save_game};
-use crate::utils::handle_loot;
+use crate::utils::{handle_loot, parse_initial_equipment};
 
 fn main() {
     // Load the gamebook.json file
@@ -19,6 +24,10 @@ fn main() {
 
     // Create the player
     let mut player = Player::new();
+
+    gamebook.player = Some(player);
+
+    parse_initial_equipment(&mut gamebook);
 
     print!("{}[2J", 27 as char);
 
@@ -38,6 +47,7 @@ fn main() {
 
             if let Some(loot) = page.loot.as_ref() {
                 handle_loot(&mut player, loot);
+                println!();
             }
 
             // If there are no options, exit the loop
@@ -53,6 +63,7 @@ fn main() {
             // Print global options
             println!();
             logger::log_choice("I. Check Inventory");
+            logger::log_choice("E. Check Equipment");
             logger::log_choice("S. Save");
             logger::log_choice("X. Exit game");
 
@@ -65,6 +76,29 @@ fn main() {
             } else if user_input.trim().to_uppercase() == "S" {
                 save_game(&player, current_page_id);
                 continue;
+            } else if user_input.trim().to_uppercase() == "E" {
+                'equipment: loop {
+                    player.equipment.show();
+                    println!("Select an option to continue:");
+                    println!("T: Return to the game");
+                    println!("I: Open Inventory");
+
+                    let equipment_input = read_user_input();
+
+                    match equipment_input.trim().to_uppercase().as_str() {
+                        "T" => {
+                            // Return to the game
+                            break 'equipment;
+                        }
+                        "I" => {
+                            // Go to inventory
+                            break;
+                        }
+                        _ => {
+                            println!("Invalid input. Please try again.");
+                        }
+                    }
+                }
             } else if user_input.trim().to_uppercase() == "I" {
                 loop {
                     player.inventory.show();

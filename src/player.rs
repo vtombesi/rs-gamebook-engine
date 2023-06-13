@@ -1,9 +1,15 @@
 use crate::inventory::Inventory;
 use crate::item::Item;
+use crate::equipment::Equipment;
+use crate::stats::Stats;
+use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Deserialize)]
 pub struct Player {
     pub health: i32,
     pub inventory: Inventory,
+    pub stats: Stats,
+    pub equipment: Equipment,
 }
 
 impl Player {
@@ -11,6 +17,8 @@ impl Player {
         Player {
             health: 20,
             inventory: Inventory::new(),
+            stats: Stats::new(10, 10, 10, 10),
+            equipment: Equipment::new(),
         }
     }
 

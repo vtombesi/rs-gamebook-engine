@@ -5,7 +5,7 @@ use std::fs::write;
 use serde_json::{json, Value};
 use crate::inventory::Inventory;
 use crate::item::{Item, ItemType};
-use crate::logger;
+use crate::{Equipment, logger, Stats};
 
 use super::player::Player;
 use super::gamebook::{GameBook, Creature, Choice};
@@ -15,7 +15,9 @@ pub fn load_gamebook() -> GameBook {
     let path = Path::new("./data/gamebook.json");
     let file = File::open(path).expect("Failed to open file");
 
-    serde_json::from_reader(file).expect("Failed to parse JSON")
+    let mut gamebook: GameBook = serde_json::from_reader(file).expect("Failed to parse JSON");
+
+    gamebook
 }
 
 pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &GameBook, selected_option: &Choice, current_page_id: &mut usize) {
@@ -133,39 +135,56 @@ pub fn save_game(player: &Player, page_id: usize) {
     write(save_file_name, save_data.to_string()).expect("Unable to write save file");
 }
 
-pub fn load_game(slot: usize) -> Option<(Player, usize)> {
-    let save_file_name = format!("save{}.json", slot);
-
-    if let Ok(save_data) = read_to_string(&save_file_name) {
-        if let Ok(json_data) = serde_json::from_str::<Value>(&save_data) {
-            let health = json_data["health"].as_i64().unwrap_or(0) as i32;
-            
-            let inventory_items = json_data["inventory"]
-                .as_array()
-                .unwrap_or(&vec![])
-                .iter()
-                .map(|item| {
-                    let item_name = item.as_str().unwrap_or("");
-                    Item::new(item_name.into(), ItemType::SomeType, 1, None)
-                })
-                .collect();
-            
-            let page_id = json_data["page_id"].as_u64().unwrap_or(0) as usize;
-
-            let player = Player {
-                health,
-                inventory: Inventory { items: inventory_items },
-            };
-
-            return Some((player, page_id));
-        }
-    }
-
-    None
-}
+// pub fn load_game(slot: usize) -> Option<(Player, usize)> {
+//     let save_file_name = format!("save{}.json", slot);
+//
+//     if let Ok(save_data) = read_to_string(&save_file_name) {
+//         if let Ok(json_data) = serde_json::from_str::<Value>(&save_data) {
+//             let health = json_data["health"].as_i64().unwrap_or(0) as i32;
+//
+//             let inventory_items = json_data["inventory"]
+//                 .as_array()
+//                 .unwrap_or(&vec![])
+//                 .iter()
+//                 .map(|item| {
+//                     let item_name = item.as_str().unwrap_or("");
+//                     Item::new(item_name.into(), ItemType::SomeType, 1, None)
+//                 })
+//                 .collect();
+//
+//             let page_id = json_data["page_id"].as_u64().unwrap_or(0) as usize;
+//
+//             let player = Player {
+//                 health,
+//                 inventory: Inventory { items: inventory_items },
+//
+//             };
+//
+//             return Some((player, page_id));
+//         }
+//     }
+//
+//     None
+// }
 
 pub fn handle_loot(player: &mut Player, loot: &[Item]) {
     for item in loot {
         player.pickup(item.clone());
     }
 }
+
+pub fn parse_initial_equipment(gamebook: &mut GameBook) {
+    if let Some(player_data) = &mut gamebook.player {
+        if let Some(stats_data) = player_data.stats {
+            let stats: Stats = stats_data;
+            player_data.stats = stats;
+        }
+
+        if let Some(equipment_data) = player_data.equipment {
+            let equipment: Equipment = equipment_data;
+            player_data.equipment = equipment;
+        }
+    }
+}
+
+

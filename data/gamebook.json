@@ -1,5 +1,36 @@
 {
   "start_page": 1,
+  "player": {
+    "stats": {
+      "strength": 10,
+      "agility": 10,
+      "spirit": 10,
+      "luck": 10
+    },
+    "equipment": {
+      "armour": {
+        "name": "Armatura di Legno",
+        "item_type": "Armour",
+        "quantity": 1,
+        "effect": {
+          "stat": "Agility",
+          "value": 3
+        }
+      },
+      "weapon": {
+        "name": "Spada di ferro brutta",
+        "item_type": "Weapon",
+        "quantity": 1,
+        "effect": {
+          "stat": "Strength",
+          "value": 2
+        }
+      },
+      "shield": null,
+      "necklace": null,
+      "ring": null
+    }
+  },
   "pages": [
     {
       "id": 1,
