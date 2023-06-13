@@ -10,7 +10,7 @@ mod logger;
 
 use player::Player;
 use utils::{load_gamebook, handle_combat, read_user_input, save_game};
-use crate::utils::{handle_loot, parse_initial_equipment};
+use crate::{utils::{handle_loot, parse_initial_equipment}, item::ItemType};
 
 fn main() {
     // Load the gamebook.json file
@@ -105,6 +105,18 @@ fn main() {
                         break;
                     } else if let Ok(item_choice) = inventory_input.trim().parse::<usize>() {
                         // Try to use the chosen item
+
+                        if let Some(item) = gamebook.player.inventory.get_item(0) {
+                            if let ItemType::Quest = item.item_type {
+                                // do nothing
+                            } else if let ItemType::Usable = item.item_type {
+                                let _ = gamebook.player.use_item(item_choice);
+                            } else {
+                                gamebook.player.equipment.equip_item(item.clone());
+                            }
+                        }
+
+
                         if let Err(e) = gamebook.player.inventory.use_item(item_choice) {
                             println!("Error using item: {}", e);
                         }

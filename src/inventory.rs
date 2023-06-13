@@ -59,4 +59,9 @@ impl Inventory {
             logger::log_loot_item(format!("You have picked up some {}s(x{}).", item.name, item.quantity));
         }
     }
+
+    pub fn get_item(&mut self, item_index: usize) -> Option<&mut Item> {
+        self.items.get_mut(item_index)
+    }
+
 }

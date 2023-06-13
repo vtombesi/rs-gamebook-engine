@@ -9,7 +9,7 @@
     },
     "equipment": {
       "armour": {
-        "name": "Armatura di Legno",
+        "name": "Wood Armour",
         "type": "Armour",
         "quantity": 1,
         "effect": {
@@ -18,7 +18,7 @@
         }
       },
       "weapon": {
-        "name": "Spada di ferro brutta",
+        "name": "Ugly shiny sword",
         "type": "Weapon",
         "quantity": 1,
         "effect": {
@@ -47,11 +47,20 @@
       ],
       "loot": [
         {
-          "name": "Armatura d'oro",
+          "name": "Ethereal Armour",
           "type": "Armour",
           "quantity": 1,
           "effect": {
             "stat": "Agility",
+            "value": 10
+          }
+        },
+        {
+          "name": "Scream Sword",
+          "type": "Weapon",
+          "quantity": 1,
+          "effect": {
+            "stat": "Strength",
             "value": 10
           }
         },
