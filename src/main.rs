@@ -39,9 +39,11 @@ fn main() {
             println!();
             println!();
 
-            if let Some(loot) = page.loot.as_ref() {
-                handle_loot(&mut gamebook.player, loot);
-                println!();
+            if !gamebook.visited_pages.contains(&current_page_id) {
+                if let Some(loot) = page.loot.as_ref() {
+                    handle_loot(&mut gamebook.player, loot);
+                    println!();
+                }
             }
 
             // If there are no options, exit the loop
@@ -115,11 +117,6 @@ fn main() {
                                 gamebook.player.equipment.equip_item(item.clone());
                             }
                         }
-
-
-                        if let Err(e) = gamebook.player.inventory.use_item(item_choice) {
-                            println!("Error using item: {}", e);
-                        }
                     } else {
                         println!("Invalid input. Please try again.");
                     }
@@ -131,9 +128,14 @@ fn main() {
                 // Check if the choice is valid
                 if choice > 0 && choice <= page.options.len() {
                     if let Some(selected_option) = page.options.get(choice - 1) {
-                        if let Some(mut creature) = selected_option.creature.clone() {
-                            handle_combat(&mut gamebook, &mut creature, selected_option, &mut current_page_id);
+                        
+                        if !gamebook.visited_pages.contains(&current_page_id) {
+                            if let Some(mut creature) = selected_option.creature.clone() {
+                                handle_combat(&mut gamebook, &mut creature, selected_option, &mut current_page_id);
+                            }
                         }
+
+                        gamebook.visited_pages.insert(current_page_id);
 
                         // Change the current page
                         current_page_id = selected_option.destination;

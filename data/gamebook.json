@@ -88,7 +88,7 @@
     },
     {
       "id": 3,
-      "text": "You concentrate, your magic staff glows as you prepare your spell. Your energy infuses the ground, ready to respond to your call when needed.",
+      "text": "You concentrate, your magic staff glows as you prepare your spell. REFRIGERO! Your energy infuses the ground, ready to respond to your call when needed.",
       "options": [
         {
           "text": "Enter the Endless Desert",

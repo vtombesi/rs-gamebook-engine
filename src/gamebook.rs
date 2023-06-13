@@ -1,5 +1,7 @@
 // Nel file gamebook.rs
 
+use std::collections::HashSet;
+
 use serde::{Deserialize};
 use rand::Rng;
 use crate::item::Item;
@@ -24,6 +26,8 @@ pub struct GameBook {
     #[serde(default)]
     pub player: Player,
     pub initial: Option<PlayerImportData>,
+    #[serde(default)]
+    pub visited_pages: HashSet<usize>,
 }
 
 #[derive(Debug, Deserialize, Clone)]
