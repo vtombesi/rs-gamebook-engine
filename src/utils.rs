@@ -2,14 +2,14 @@ use std::fs::File;
 use std::io::{self};
 use std::path::Path;
 use std::fs::write;
-use serde_json::{json, Value};
-use crate::inventory::Inventory;
-use crate::item::{Item, ItemType};
-use crate::{Equipment, logger, Stats};
+use serde_json::{json};
+use crate::item::{Item};
+use crate::{logger};
+use crate::player::PlayerImportData;
+use crate::stats::Stats;
 
 use super::player::Player;
 use super::gamebook::{GameBook, Creature, Choice};
-use std::fs::read_to_string;
 
 pub fn load_gamebook() -> GameBook {
     let path = Path::new("./data/gamebook.json");
@@ -20,8 +20,10 @@ pub fn load_gamebook() -> GameBook {
     gamebook
 }
 
-pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &GameBook, selected_option: &Choice, current_page_id: &mut usize) {
+pub fn handle_combat(gamebook: &mut GameBook, creature: &mut Creature, selected_option: &Choice, current_page_id: &mut usize) {
     // print!("{}[2J", 27 as char);
+
+    let mut player: Player = gamebook.player.clone();
 
     logger::log_monster_name(format!("A {} appears before you:", creature.creature_name));
 
@@ -74,7 +76,7 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
             println!("{}", creature.victory_text);
 
             if let Some(loot) = selected_option.creature.as_ref().and_then(|creature| creature.loot.as_ref()) {
-                handle_loot(player, loot);
+                handle_loot(&mut player, loot);
             }
 
             let current_page = gamebook.pages.iter().find(|p| p.id == selected_option.destination);
@@ -102,6 +104,7 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
         println!("You: {}", player.health);
         println!("{}: {}", creature.creature_name, creature.health);
     }
+
 }
 
 pub fn read_user_input() -> String {
@@ -174,22 +177,25 @@ pub fn handle_loot(player: &mut Player, loot: &[Item]) {
 }
 
 pub fn parse_initial_equipment(gamebook: &mut GameBook) {
-    if let Some(player_data) = &mut gamebook.player {
+    let initial: Option<PlayerImportData> = gamebook.initial.clone();
 
-        let stats_data = player_data.stats; // stats_data è di tipo `Stats`
-        player_data.stats = stats_data;
+    if let Some(initialOptions) = initial {
 
-        if let Some(armour_data) = &player_data.equipment.armour {
-            // ora armour_data è di tipo `Item`
-            // il tuo codice qui...
+        println!("Ho trovato le stat iniziali");
+
+        gamebook.player.stats = Stats {
+            strength: initialOptions.stats.strength,
+            agility: initialOptions.stats.agility,
+            spirit: initialOptions.stats.spirit,
+            luck: initialOptions.stats.luck,
+        };
+
+        if let Some(armour_item) = initialOptions.equipment.armour {
+            println!("Ho trovato armor item: {}", armour_item);
         }
-
-        if let Some(weapon_data) = &player_data.equipment.weapon {
-            // ora weapon_data è di tipo `Item`
-            // il tuo codice qui...
-        }
-
     }
 }
+
+
 
 

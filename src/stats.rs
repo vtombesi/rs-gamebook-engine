@@ -1,12 +1,11 @@
-use crate::inventory::Inventory;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize};
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Stats {
-    strength: i32,
-    agility: i32,
-    spirit: i32,
-    luck: i32,
+    pub strength: i32,
+    pub agility: i32,
+    pub spirit: i32,
+    pub luck: i32,
 }
 
 impl Stats {

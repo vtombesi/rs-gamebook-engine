@@ -1,8 +1,8 @@
 use crate::item::{Item};
 use crate::logger;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Inventory {
     pub items: Vec<Item>,
 }

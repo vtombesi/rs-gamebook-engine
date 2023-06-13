@@ -2,14 +2,31 @@ use crate::inventory::Inventory;
 use crate::item::Item;
 use crate::equipment::Equipment;
 use crate::stats::Stats;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Player {
     pub health: i32,
     pub inventory: Inventory,
     pub stats: Stats,
     pub equipment: Equipment,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+pub struct PlayerImportData {
+    pub stats: Stats,
+    pub equipment: Equipment,
+}
+
+impl Default for Player {
+    fn default() -> Self {
+        Player {
+            health: 20,
+            inventory: Inventory::new(),
+            stats: Stats::new(10, 10, 10, 10),
+            equipment: Equipment::new(),
+        }
+    }
 }
 
 impl Player {

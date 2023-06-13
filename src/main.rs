@@ -8,24 +8,18 @@ mod equipment;
 mod stats;
 mod logger;
 
-use crate::equipment::Equipment;
-use crate::stats::Stats;
-
 use player::Player;
 use utils::{load_gamebook, handle_combat, read_user_input, save_game};
 use crate::utils::{handle_loot, parse_initial_equipment};
 
 fn main() {
     // Load the gamebook.json file
-    let gamebook = load_gamebook();
+    let mut gamebook = load_gamebook();
 
     // Start from the start_page page
     let mut current_page_id = gamebook.start_page;
 
-    // Create the player
-    let mut player = Player::new();
-
-    gamebook.player = Some(player);
+    gamebook.player = Player::new();
 
     parse_initial_equipment(&mut gamebook);
 
@@ -46,7 +40,7 @@ fn main() {
             println!();
 
             if let Some(loot) = page.loot.as_ref() {
-                handle_loot(&mut player, loot);
+                handle_loot(&mut gamebook.player, loot);
                 println!();
             }
 
@@ -74,11 +68,11 @@ fn main() {
             if user_input.trim().to_uppercase() == "X" {
                 std::process::exit(0);
             } else if user_input.trim().to_uppercase() == "S" {
-                save_game(&player, current_page_id);
+                save_game(&mut gamebook.player, current_page_id);
                 continue;
             } else if user_input.trim().to_uppercase() == "E" {
                 'equipment: loop {
-                    player.equipment.show();
+                    gamebook.player.equipment.show();
                     println!("Select an option to continue:");
                     println!("T: Return to the game");
                     println!("I: Open Inventory");
@@ -101,7 +95,7 @@ fn main() {
                 }
             } else if user_input.trim().to_uppercase() == "I" {
                 loop {
-                    player.inventory.show();
+                    gamebook.player.inventory.show();
                     println!("Select an item to use or type T to return to the game.");
 
                     let inventory_input = read_user_input();
@@ -111,7 +105,7 @@ fn main() {
                         break;
                     } else if let Ok(item_choice) = inventory_input.trim().parse::<usize>() {
                         // Try to use the chosen item
-                        if let Err(e) = player.inventory.use_item(item_choice) {
+                        if let Err(e) = gamebook.player.inventory.use_item(item_choice) {
                             println!("Error using item: {}", e);
                         }
                     } else {
@@ -126,7 +120,7 @@ fn main() {
                 if choice > 0 && choice <= page.options.len() {
                     if let Some(selected_option) = page.options.get(choice - 1) {
                         if let Some(mut creature) = selected_option.creature.clone() {
-                            handle_combat(&mut player, &mut creature, &gamebook, selected_option, &mut current_page_id);
+                            handle_combat(&mut gamebook, &mut creature, selected_option, &mut current_page_id);
                         }
 
                         // Change the current page

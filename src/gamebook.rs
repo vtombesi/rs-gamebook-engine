@@ -4,6 +4,7 @@ use serde::{Deserialize};
 use rand::Rng;
 use crate::item::Item;
 use crate::Player;
+use crate::player::PlayerImportData;
 
 impl Creature {
     pub fn take_damage(&mut self, damage: i32) {
@@ -20,7 +21,9 @@ impl Creature {
 pub struct GameBook {
     pub start_page: usize,
     pub pages: Vec<Page>,
-    pub player: Option<Player>,
+    #[serde(default)]
+    pub player: Player,
+    pub initial: Option<PlayerImportData>,
 }
 
 #[derive(Debug, Deserialize, Clone)]

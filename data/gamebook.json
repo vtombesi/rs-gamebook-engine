@@ -1,6 +1,6 @@
 {
   "start_page": 1,
-  "player": {
+  "initial": {
     "stats": {
       "strength": 10,
       "agility": 10,
@@ -10,7 +10,7 @@
     "equipment": {
       "armour": {
         "name": "Armatura di Legno",
-        "item_type": "Armour",
+        "type": "Armour",
         "quantity": 1,
         "effect": {
           "stat": "Agility",
@@ -19,7 +19,7 @@
       },
       "weapon": {
         "name": "Spada di ferro brutta",
-        "item_type": "Weapon",
+        "type": "Weapon",
         "quantity": 1,
         "effect": {
           "stat": "Strength",
