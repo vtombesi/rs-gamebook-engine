@@ -3,7 +3,7 @@ use std::io::{self};
 use std::path::Path;
 use std::fs::write;
 use serde_json::json;
-use crate::item::{Item, ItemType};
+use crate::logger;
 
 use super::player::Player;
 use super::gamebook::{GameBook, Creature, Choice};
@@ -16,20 +16,26 @@ pub fn load_gamebook() -> GameBook {
 }
 
 pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &GameBook, selected_option: &Choice, current_page_id: &mut usize) {
-    println!("A {} appears before you:", creature.creature_name);
+    print!("{}[2J", 27 as char);
+
+    logger::log_monster_name(format!("A {} appears before you:", creature.creature_name));
 
     println!("You: {}", player.health);
     println!("{}: {}", creature.creature_name, creature.health);
 
     loop {
-        println!("It's your turn. What do you want to do?");
-        println!("1. Attack the {} with your weapon", creature.creature_name);
-        println!("2. Defend and try to block the {}'s attack", creature.creature_name);
-        println!("3. Heal yourself with a potion");
-        println!("4. Run away");
+        println!();
+        logger::log_narration("It's your turn. What do you want to do?");
+        println!();
+        logger::log_choice("1. Attack");
+        logger::log_choice("2. Defend");
+        logger::log_choice("3. Use an item");
+        logger::log_choice("4. Flee");
 
         let user_input = read_user_input();
         let choice = user_input.trim().parse::<u32>();
+
+        print!("{}[2J", 27 as char);
 
         match choice {
             Ok(choice) => match choice {
@@ -81,7 +87,7 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
         // Turno della creatura
         let damage = creature.attack();
         player.take_damage(damage);
-        println!("The {} attacks you and deals {} damage points.", creature.creature_name, damage);
+        logger::log_damage(format!("The {} attacks you and deals {} damage points.", creature.creature_name, damage));
 
         if player.health <= 0 {
             println!("{}", creature.defeat_text);
