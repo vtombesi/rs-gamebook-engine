@@ -110,11 +110,26 @@ impl Equipment {
     pub fn show(&self) {
         println!("--- Equipment ---");
 
-        println!("[Armour] - {} - {:?}", self.armour.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No armour equipped".to_owned()), self.armour.as_ref().map(|item| &item.effect));
-        println!("[Weapon] - {} - {:?}", self.weapon.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No weapon equipped".to_owned()), self.weapon.as_ref().map(|item| &item.effect));
-        println!("[Shield] - {} - {:?}", self.shield.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No shield equipped".to_owned()), self.shield.as_ref().map(|item| &item.effect));
-        println!("[Ring] - {} - {:?}", self.ring.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No ring equipped".to_owned()), self.ring.as_ref().map(|item| &item.effect));
-        println!("[Necklace] - {} - {:?}", self.necklace.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No necklace equipped".to_owned()), self.necklace.as_ref().map(|item| &item.effect));
+        println!("[Armour] - {} - {}",
+                 self.armour.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No armour equipped".to_owned()),
+                 self.armour.as_ref().and_then(|item| item.effect.as_ref().map(|effect| effect.format_effect())).unwrap_or_else(|| "No effect".to_owned())
+        );
+        println!("[Weapon] - {} - {}",
+                 self.weapon.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No weapon equipped".to_owned()),
+                 self.weapon.as_ref().and_then(|item| item.effect.as_ref().map(|effect| effect.format_effect())).unwrap_or_else(|| "No effect".to_owned())
+        );
+        println!("[Shield] - {} - {}",
+                 self.shield.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No shield equipped".to_owned()),
+                 self.shield.as_ref().and_then(|item| item.effect.as_ref().map(|effect| effect.format_effect())).unwrap_or_else(|| "No effect".to_owned())
+        );
+        println!("[Ring] - {} - {}",
+                 self.ring.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No ring equipped".to_owned()),
+                 self.ring.as_ref().and_then(|item| item.effect.as_ref().map(|effect| effect.format_effect())).unwrap_or_else(|| "No effect".to_owned())
+        );
+        println!("[Necklace] - {} - {}",
+                 self.necklace.as_ref().map(|item| item.name.to_owned()).unwrap_or_else(|| "No necklace equipped".to_owned()),
+                 self.necklace.as_ref().and_then(|item| item.effect.as_ref().map(|effect| effect.format_effect())).unwrap_or_else(|| "No effect".to_owned())
+        );
 
         println!("-----------------");
         println!();

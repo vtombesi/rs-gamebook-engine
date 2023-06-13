@@ -1,4 +1,4 @@
-use crate::item::{Item};
+use crate::item::{Item, ItemType};
 use crate::logger;
 use serde::{Deserialize};
 
@@ -13,9 +13,30 @@ impl Inventory {
     }
 
     pub fn show(&self) {
-        for (index, item) in self.items.iter().enumerate() {
-            println!("{}. {}", index + 1, item);
+        println!("--- Inventory ---");
+
+        if self.items.is_empty() {
+            println!("No items in the inventory.");
+        } else {
+            for (index, item) in self.items.iter().enumerate() {
+                let effect = item
+                    .effect
+                    .as_ref()
+                    .map(|effect| effect.format_effect())
+                    .unwrap_or_else(|| "No effect".to_owned());
+
+                let action = match item.item_type {
+                    ItemType::Armour | ItemType::Weapon | ItemType::Shield | ItemType::Ring | ItemType::Necklace => "Equip",
+                    ItemType::Usable => "Use",
+                    ItemType::Quest => "",
+                };
+
+                println!("{}. {} (x{}) - {} [{}]", index + 1, item.name, item.quantity, effect, action);
+            }
         }
+
+        println!("-----------------");
+        println!();
     }
 
     pub fn use_item(&mut self, item_index: usize) -> Result<(), String> {

@@ -192,6 +192,27 @@ pub fn parse_initial_equipment(gamebook: &mut GameBook) {
 
         if let Some(armour_item) = initialOptions.equipment.armour {
             println!("Ho trovato armor item: {}", armour_item);
+            gamebook.player.equipment.equip_item(armour_item);
+        }
+
+        if let Some(weapon_item) = initialOptions.equipment.weapon {
+            println!("Ho trovato weapon_item: {}", weapon_item);
+            gamebook.player.equipment.equip_item(weapon_item);
+        }
+
+        if let Some(shield_item) = initialOptions.equipment.shield {
+            println!("Ho trovato shield_item: {}", shield_item);
+            gamebook.player.equipment.equip_item(shield_item);
+        }
+
+        if let Some(ring_item) = initialOptions.equipment.ring {
+            println!("Ho trovato ring_item: {}", ring_item);
+            gamebook.player.equipment.equip_item(ring_item);
+        }
+
+        if let Some(necklace_item) = initialOptions.equipment.necklace {
+            println!("Ho trovato necklace_item: {}", necklace_item);
+            gamebook.player.equipment.equip_item(necklace_item);
         }
     }
 }

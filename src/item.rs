@@ -31,7 +31,6 @@ pub enum ItemType {
     Shield,
     Necklace,
     Ring,
-    SomeType,
     Quest,
     // Aggiungi qui altri tipi di oggetti se necessario
 }

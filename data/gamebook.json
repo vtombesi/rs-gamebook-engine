@@ -47,10 +47,13 @@
       ],
       "loot": [
         {
-          "name": "Red Key",
-          "type": "Quest",
+          "name": "Armatura d'oro",
+          "type": "Armour",
           "quantity": 1,
-          "effect": null
+          "effect": {
+            "stat": "Agility",
+            "value": 10
+          }
         },
         {
           "name": "Potion",

@@ -23,7 +23,7 @@ fn main() {
 
     parse_initial_equipment(&mut gamebook);
 
-    print!("{}[2J", 27 as char);
+    // print!("{}[2J", 27 as char);
 
 // Main loop
     loop {
