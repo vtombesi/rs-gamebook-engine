@@ -1,7 +1,6 @@
 # RS Gamebook Engine
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Rust](https://github.com/vtombesi/rs-gamebook-engine/actions/workflows/rust.yml/badge.svg)](https://github.com/vtombesi/rs-gamebook-engine/actions/workflows/rust.yml)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Rust](https://github.com/vtombesi/rs-gamebook-engine/actions/workflows/rust.yml/badge.svg)](https://github.com/vtombesi/rs-gamebook-engine/actions/workflows/rust.yml)
 
 ## Description
 
