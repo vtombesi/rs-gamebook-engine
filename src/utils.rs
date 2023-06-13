@@ -15,7 +15,7 @@ pub fn load_gamebook() -> GameBook {
     let path = Path::new("./data/gamebook.json");
     let file = File::open(path).expect("Failed to open file");
 
-    let mut gamebook: GameBook = serde_json::from_reader(file).expect("Failed to parse JSON");
+    let gamebook: GameBook = serde_json::from_reader(file).expect("Failed to parse JSON");
 
     gamebook
 }
@@ -57,7 +57,7 @@ pub fn handle_combat(gamebook: &mut GameBook, creature: &mut Creature, selected_
                 }
                 3 => {
                     let healing = player.heal(10);
-                    println!("You heal yourself for {:?} points.", healing);
+                    logger::log_narration(format!("You heal yourself for {:?} points.", healing));
                 }
                 4 => {
                     println!("You decide to run away from the {}.", creature.creature_name);
@@ -80,7 +80,7 @@ pub fn handle_combat(gamebook: &mut GameBook, creature: &mut Creature, selected_
             }
 
             let current_page = gamebook.pages.iter().find(|p| p.id == selected_option.destination);
-            if let Some(page) = current_page {
+            if let Some(_page) = current_page {
                 // println!("{}", page.text);
                 *current_page_id = selected_option.destination;
             } else {
@@ -179,39 +179,31 @@ pub fn handle_loot(player: &mut Player, loot: &[Item]) {
 pub fn parse_initial_equipment(gamebook: &mut GameBook) {
     let initial: Option<PlayerImportData> = gamebook.initial.clone();
 
-    if let Some(initialOptions) = initial {
-
-        println!("Ho trovato le stat iniziali");
-
+    if let Some(initial_options) = initial {
         gamebook.player.stats = Stats {
-            strength: initialOptions.stats.strength,
-            agility: initialOptions.stats.agility,
-            spirit: initialOptions.stats.spirit,
-            luck: initialOptions.stats.luck,
+            strength: initial_options.stats.strength,
+            agility: initial_options.stats.agility,
+            spirit: initial_options.stats.spirit,
+            luck: initial_options.stats.luck,
         };
 
-        if let Some(armour_item) = initialOptions.equipment.armour {
-            println!("Ho trovato armor item: {}", armour_item);
+        if let Some(armour_item) = initial_options.equipment.armour {
             gamebook.player.equipment.equip_item(armour_item);
         }
 
-        if let Some(weapon_item) = initialOptions.equipment.weapon {
-            println!("Ho trovato weapon_item: {}", weapon_item);
+        if let Some(weapon_item) = initial_options.equipment.weapon {
             gamebook.player.equipment.equip_item(weapon_item);
         }
 
-        if let Some(shield_item) = initialOptions.equipment.shield {
-            println!("Ho trovato shield_item: {}", shield_item);
+        if let Some(shield_item) = initial_options.equipment.shield {
             gamebook.player.equipment.equip_item(shield_item);
         }
 
-        if let Some(ring_item) = initialOptions.equipment.ring {
-            println!("Ho trovato ring_item: {}", ring_item);
+        if let Some(ring_item) = initial_options.equipment.ring {
             gamebook.player.equipment.equip_item(ring_item);
         }
 
-        if let Some(necklace_item) = initialOptions.equipment.necklace {
-            println!("Ho trovato necklace_item: {}", necklace_item);
+        if let Some(necklace_item) = initial_options.equipment.necklace {
             gamebook.player.equipment.equip_item(necklace_item);
         }
     }

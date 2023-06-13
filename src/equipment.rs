@@ -31,46 +31,35 @@ impl Equipment {
     }
 
     pub fn equip_item(&mut self, item: Item) -> Option<Item> {
-        println!("Inizio equip_item con item: {:?}", item); // Mostra l'item all'inizio della funzione
-
         let slot = match item.item_type {
             ItemType::Armour => {
-                println!("item è Armour");
                 &mut self.armour
             }
             ItemType::Weapon => {
-                println!("item è Weapon");
                 &mut self.weapon
             }
             ItemType::Shield => {
-                println!("item è Shield");
                 &mut self.shield
             }
             ItemType::Necklace => {
-                println!("item è Necklace");
                 &mut self.necklace
             }
             ItemType::Ring => {
-                println!("item è Ring");
                 &mut self.ring
             }
             _ => {
-                println!("item non è un tipo conosciuto");
                 return Some(item)
             }
         };
 
         if let Some(replaced_item) = slot.take() {
-            println!("L'item sostituisce un item esistente: {:?}", replaced_item);
             *slot = Some(item);
             Some(replaced_item)
         } else {
-            println!("L'item viene equipaggiato in uno slot vuoto");
             *slot = Some(item);
             None
         }
     }
-
 
     pub fn remove_item(&mut self, item_type: ItemType) -> Option<Item> {
         let slot = match item_type {

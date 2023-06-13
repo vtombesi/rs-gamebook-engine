@@ -3,17 +3,6 @@ use std::fmt;
 
 use crate::effect::Effect;
 
-impl Item {
-    pub fn new(name: String, item_type: ItemType, quantity: u32, effect: Option<Effect>) -> Self {
-        Item {
-            name,
-            item_type,
-            quantity,
-            effect,
-        }
-    }
-}
-
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Item {
     pub name: String,
