@@ -19,7 +19,7 @@ pub fn load_gamebook() -> GameBook {
 }
 
 pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &GameBook, selected_option: &Choice, current_page_id: &mut usize) {
-    print!("{}[2J", 27 as char);
+    // print!("{}[2J", 27 as char);
 
     logger::log_monster_name(format!("A {} appears before you:", creature.creature_name));
 
@@ -44,7 +44,7 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
             Ok(choice) => match choice {
                 1 => {
                     let damage = player.attack();
-                    creature.take_damage(damage);
+                    creature.take_damage(10);
                     println!("You attack the {} and damage it for {} damage points.", creature.creature_name, damage);
                 }
                 2 => {
@@ -70,15 +70,14 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
 
         if creature.health <= 0 {
             println!("{}", creature.victory_text);
+
             if let Some(loot) = selected_option.creature.as_ref().and_then(|creature| creature.loot.as_ref()) {
-                for item in loot {
-                    player.pickup(item.clone());
-                }
+                handle_loot(player, loot);
             }
 
             let current_page = gamebook.pages.iter().find(|p| p.id == selected_option.destination);
             if let Some(page) = current_page {
-                println!("{}", page.text);
+                // println!("{}", page.text);
                 *current_page_id = selected_option.destination;
             } else {
                 println!("End of the game. You won!");
@@ -95,7 +94,7 @@ pub fn handle_combat(player: &mut Player, creature: &mut Creature, gamebook: &Ga
         if player.health <= 0 {
             println!("{}", creature.defeat_text);
             println!("Game over.");
-            break;
+            std::process::exit(0);
         }
 
         println!("You: {}", player.health);
@@ -163,4 +162,10 @@ pub fn load_game(slot: usize) -> Option<(Player, usize)> {
     }
 
     None
+}
+
+pub fn handle_loot(player: &mut Player, loot: &[Item]) {
+    for item in loot {
+        player.pickup(item.clone());
+    }
 }

@@ -13,6 +13,20 @@
           "text": "Cast a preparatory spell",
           "destination": 3
         }
+      ],
+      "loot": [
+        {
+          "name": "Red Key",
+          "type": "Quest",
+          "quantity": 1,
+          "effect": null
+        },
+        {
+          "name": "Potion",
+          "type": "Usable",
+          "quantity": 3,
+          "effect": null
+        }
       ]
     },
     {

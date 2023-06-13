@@ -25,6 +25,7 @@ pub struct GameBook {
 pub struct Page {
     pub id: usize,
     pub text: String,
+    pub loot: Option<Vec<Item>>,
     pub options: Vec<Choice>,
 }
 

@@ -8,6 +8,7 @@ mod logger;
 
 use player::Player;
 use utils::{load_gamebook, handle_combat, read_user_input, save_game};
+use crate::utils::handle_loot;
 
 fn main() {
     // Load the gamebook.json file
@@ -24,7 +25,7 @@ fn main() {
 // Main loop
     loop {
         // Clear the terminal
-        print!("{}[2J", 27 as char);
+        // print!("{}[2J", 27 as char);
 
         // Find the current page
         let current_page = gamebook.pages.iter().find(|p| p.id == current_page_id);
@@ -34,6 +35,10 @@ fn main() {
             logger::log_narration(format!("{}", page.text));
             println!();
             println!();
+
+            if let Some(loot) = page.loot.as_ref() {
+                handle_loot(&mut player, loot);
+            }
 
             // If there are no options, exit the loop
             if page.options.is_empty() {
