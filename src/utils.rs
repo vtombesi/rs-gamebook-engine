@@ -2,11 +2,14 @@ use std::fs::File;
 use std::io::{self};
 use std::path::Path;
 use std::fs::write;
-use serde_json::json;
+use serde_json::{json, Value};
+use crate::inventory::Inventory;
+use crate::item::{Item, ItemType};
 use crate::logger;
 
 use super::player::Player;
 use super::gamebook::{GameBook, Creature, Choice};
+use std::fs::read_to_string;
 
 pub fn load_gamebook() -> GameBook {
     let path = Path::new("./data/gamebook.json");
@@ -107,11 +110,57 @@ pub fn read_user_input() -> String {
 }
 
 pub fn save_game(player: &Player, page_id: usize) {
+    println!("Seleziona uno slot di salvataggio (1, 2 o 3):");
+    let mut save_slot = String::new();
+    std::io::stdin().read_line(&mut save_slot).expect("Errore nella lettura dell'input");
+
+    let save_slot = save_slot.trim();
+    let save_file_name = match save_slot {
+        "1" => "saves/save1.json",
+        "2" => "saves/save2.json",
+        "3" => "saves/save3.json",
+        _ => {
+            println!("Slot di salvataggio non valido. Il gioco verrà salvato in 'savegame.json'.");
+            "saves/savegame.json"
+        }
+    };
+
     let save_data = json!({
         "health": player.health,
         "inventory": player.inventory.items,
         "page_id": page_id,
     });
 
-    write("savegame.json", save_data.to_string()).expect("Unable to write save game file");
+    write(save_file_name, save_data.to_string()).expect("Impossibile scrivere il file di salvataggio");
+}
+
+pub fn load_game(slot: usize) -> Option<(Player, usize)> {
+    let save_file_name = format!("save{}.json", slot);
+
+    if let Ok(save_data) = read_to_string(&save_file_name) {
+        if let Ok(json_data) = serde_json::from_str::<Value>(&save_data) {
+            let health = json_data["health"].as_i64().unwrap_or(0) as i32;
+            
+            let inventory_items = json_data["inventory"]
+                .as_array()
+                .unwrap_or(&vec![])
+                .iter()
+                .map(|item| {
+                    let item_name = item.as_str().unwrap_or("");
+                    Item::new(item_name.into(), ItemType::SomeType, 1, None)
+                })
+                .collect();
+            
+            let page_id = json_data["page_id"].as_u64().unwrap_or(0) as usize;
+
+            let player = Player {
+                health,
+                inventory: Inventory { items: inventory_items },
+            };
+
+            return Some((player, page_id));
+        }
+    }
+
+    None
 }
