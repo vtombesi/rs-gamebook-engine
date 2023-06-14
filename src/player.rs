@@ -30,15 +30,6 @@ impl Default for Player {
 }
 
 impl Player {
-    // pub fn new() -> Self {
-    //     Player {
-    //         health: 20,
-    //         inventory: Inventory::new(),
-    //         stats: Stats::new(10, 10, 10, 10),
-    //         equipment: Equipment::new(),
-    //     }
-    // }
-
     pub fn use_item(&mut self, item: &Item) {
         self.inventory.use_item(item.clone());
     }
