@@ -79,7 +79,7 @@ fn main() {
 }
 ```
 
-For a complete example of how to use RS Gamebook Engine, refer to the [examples](examples) directory.
+For a complete example of how to use RS Gamebook Engine, refer to the [examples](examples/examples.md) directory.
 
 ## License
 
