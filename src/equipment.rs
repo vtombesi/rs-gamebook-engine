@@ -61,7 +61,7 @@ impl Equipment {
         }
     }
 
-    pub fn remove_item(&mut self, item_type: ItemType) -> Option<Item> {
+    pub fn unequip_item(&mut self, item_type: ItemType) -> Option<Item> {
         let slot = match item_type {
             ItemType::Armour => &mut self.armour,
             ItemType::Weapon => &mut self.weapon,

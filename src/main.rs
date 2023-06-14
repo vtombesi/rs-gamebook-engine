@@ -19,11 +19,9 @@ fn main() {
     // Start from the start_page page
     let mut current_page_id = gamebook.start_page;
 
-    gamebook.player = Player::new();
-
     parse_initial_equipment(&mut gamebook);
 
-    // print!("{}[2J", 27 as char);
+    print!("{}[2J", 27 as char);
 
 // Main loop
     loop {
@@ -108,13 +106,15 @@ fn main() {
                     } else if let Ok(item_choice) = inventory_input.trim().parse::<usize>() {
                         // Try to use the chosen item
 
-                        if let Some(item) = gamebook.player.inventory.get_item(0) {
+                        if let Some(item) = gamebook.player.inventory.get_item(item_choice - 1).cloned() {
+                            println!("Item: {} - {}", item, item_choice);
+
                             if let ItemType::Quest = item.item_type {
                                 // do nothing
                             } else if let ItemType::Usable = item.item_type {
-                                let _ = gamebook.player.use_item(item_choice);
+                                let _ = gamebook.player.use_item(&item);
                             } else {
-                                gamebook.player.equipment.equip_item(item.clone());
+                                gamebook.player.equip_item(&item);
                             }
                         }
                     } else {

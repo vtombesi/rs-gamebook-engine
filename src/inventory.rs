@@ -39,20 +39,56 @@ impl Inventory {
         println!();
     }
 
-    pub fn use_item(&mut self, item_index: usize) -> Result<(), String> {
-        if item_index < self.items.len() {
-            let item_name = self.items.remove(item_index);
-            println!("You have used the item {}.", item_name);
-            // Here you can add the code to handle the effect of the item
-            Ok(())
+    pub fn use_item(&mut self, item: Item) {
+        let item_position = self.items.iter().position(|i| i.name == item.name && i.item_type == item.item_type);
+
+        if let Some(index) = item_position {
+            // Get a mutable reference to the item
+            let item_in_inventory = &mut self.items[index];
+
+            // Check the quantity and either decrement it or remove the item
+            if item_in_inventory.quantity > 1 {
+                item_in_inventory.quantity -= 1;
+                println!("You have used one {}.", item.name);
+            } else {
+                self.items.remove(index);
+                println!("You have used the last {}.", item.name);
+            }
         } else {
-            Err(format!("The item index {} is not valid.", item_index))
+            println!("The item {} is not in the inventory.", item.name);
         }
     }
 
-    pub fn pickup(&mut self, item: Item) {
-        let cloned_item = item.clone(); // Clone the item object
-        self.items.push(cloned_item);
+    pub fn drop_item(&mut self, item: Item) {
+        let item_position = self.items.iter().position(|i| i.name == item.name && i.item_type == item.item_type);
+
+        if let Some(index) = item_position {
+            // Get a mutable reference to the item
+            let item_in_inventory = &mut self.items[index];
+
+            // Check the quantity and either decrement it or remove the item
+            if item_in_inventory.quantity > 1 {
+                item_in_inventory.quantity -= 1;
+                println!("You dropped one {}.", item.name);
+            } else {
+                self.items.remove(index);
+                println!("You dropped the last {}.", item.name);
+            }
+        } else {
+            println!("The item {} is not in the inventory.", item.name);
+        }
+    }
+
+    pub fn pickup_item(&mut self, item: Item) {
+        // Cerca se l'oggetto è già presente
+        if let Some(existing_item) = self.items.iter_mut().find(|i| i.name == item.name && i.item_type == item.item_type) {
+            // Se esiste, incrementa la sua quantità
+            existing_item.quantity += item.quantity;
+        } else {
+            // Altrimenti, aggiungi l'oggetto all'inventario
+            self.items.push(item.clone());
+        }
+
         if item.quantity == 1 {
             logger::log_loot_item(format!("You have picked up a {}.", item.name));
         } else {

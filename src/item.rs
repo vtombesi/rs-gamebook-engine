@@ -12,7 +12,7 @@ pub struct Item {
     pub effect: Option<Effect>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub enum ItemType {
     Usable,
     Armour,

@@ -30,24 +30,35 @@ impl Default for Player {
 }
 
 impl Player {
-    pub fn new() -> Self {
-        Player {
-            health: 20,
-            inventory: Inventory::new(),
-            stats: Stats::new(10, 10, 10, 10),
-            equipment: Equipment::new(),
-        }
+    // pub fn new() -> Self {
+    //     Player {
+    //         health: 20,
+    //         inventory: Inventory::new(),
+    //         stats: Stats::new(10, 10, 10, 10),
+    //         equipment: Equipment::new(),
+    //     }
+    // }
+
+    pub fn use_item(&mut self, item: &Item) {
+        self.inventory.use_item(item.clone());
     }
 
-    pub fn use_item(&mut self, item_index: usize) -> Result<(), String> {
-        self.inventory.use_item(item_index)
-            .map_err(|e| format!("Errore nell'uso dell'oggetto: {}", e))
-        // Dopo aver utilizzato l'oggetto, potresti voler aggiungere effetti specifici dell'oggetto, come curare il giocatore
+    pub fn pickup_item(&mut self, item: &Item) {
+        self.inventory.pickup_item(item.clone());
     }
 
-    pub fn pickup(&mut self, item: Item) {
-        self.inventory.pickup(item);
+    pub fn drop_item(&mut self, item: &Item) {
+        self.inventory.drop_item(item.clone());
     }
+
+    pub fn equip_item(&mut self, item: &Item) {
+        self.equipment.equip_item(item.clone());
+    }
+
+    pub fn unequip_item(&mut self, item: Item) {
+        self.equipment.unequip_item(item.item_type);
+    }
+
     pub fn take_damage(&mut self, damage: i32) {
         self.health -= damage;
     }
@@ -57,8 +68,6 @@ impl Player {
     }
 
     pub fn attack(&self) -> i32 {
-        // Logic for calculating player's attack damage
-        // You can modify this as per your game rules
         5
     }
 

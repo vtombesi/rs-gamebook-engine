@@ -172,7 +172,7 @@ pub fn save_game(player: &Player, page_id: usize) {
 
 pub fn handle_loot(player: &mut Player, loot: &[Item]) {
     for item in loot {
-        player.pickup(item.clone());
+        player.pickup_item(item);
     }
 }
 
