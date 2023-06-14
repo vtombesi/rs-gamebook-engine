@@ -7,11 +7,12 @@ mod item;
 mod equipment;
 mod stats;
 mod logger;
+mod player_actions;
 
 use player::Player;
 use utils::{load_gamebook};
 
-use crate::{utils::{handle_loot, parse_initial_equipment}, item::ItemType};
+use crate::{utils::{handle_loot, parse_initial_equipment}};
 
 mod game_loop; // Import the new game_loop module
 
