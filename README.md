@@ -89,6 +89,19 @@ RS Gamebook Engine is licensed under the [MIT License](LICENSE).
 
 RS Gamebook Engine is inspired by the gamebooks of the 80s and the joy they brought to many readers and adventurers.
 
+## To Do
+
+There are several enhancements and features that we are still working on to improve the gamebook experience. Here's what's on the horizon:
+
+- **Conditional Options:** Developing a system to provide conditional game paths based on player's actions and choices.
+- **Internationalization:** Implementing multiple languages to cater to our global user base.
+- **Different Gamebook Examples:** Creating a diverse range of gamebook samples to showcase the flexibility and adaptability of our system.
+- **Load Saved Games:** Adding the functionality for players to save their progress and resume their adventures at a later time.
+- **Non-terminal UI:** Working on a user interface that isn't reliant on the terminal, for a more user-friendly and visually engaging experience.
+- **Player Stats and Character Sheet:** Developing a comprehensive system for players to view and track their characters' progression and statistics.
+
+Stay tuned for these exciting updates!
+
 ## Get in Touch
 
 If you have any questions, suggestions, or just want to share your gamebook creations, feel free to reach out to us at [valentino.tombesi@gmail.com](mailto:valentino.tombesi@gmail.com).
