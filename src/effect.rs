@@ -10,7 +10,13 @@ pub struct Effect {
 impl Effect {
     pub fn format_effect(&self) -> String {
         let sign = if self.value >= 0 { "+" } else { "-" };
-        format!("{} {}{}", self.stat, sign, self.value.abs())
+        if sign == "+" {
+            format!("\x1b[32m{} {}{}\x1b[0m", self.stat, sign, self.value.abs())
+        } else if sign == "-" {
+            format!("\x1b[31m{} {}{}\x1b[0m", self.stat, sign, self.value.abs())
+        } else {
+            format!("{} {}{}", self.stat, sign, self.value.abs())
+        }
     }
 }
 

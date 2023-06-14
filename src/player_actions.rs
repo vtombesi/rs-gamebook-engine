@@ -6,24 +6,24 @@ use crate::{
 };
 
 pub fn handle_equipment(gamebook: &mut GameBook) {
-    print!("{}[2J", 27 as char);
-
-    'equipment: loop {
+    fn update_screen(gamebook: &mut GameBook) {
+        print!("{}[2J", 27 as char);
         gamebook.player.equipment.show();
         println!("Select an option to continue:");
-        println!("T: Return to the game");
-        println!("I: Open Inventory");
+        logger::log_choice("(I)nventory - Re(T)urn to game");
+    }
+
+    loop {
+        update_screen(gamebook);
 
         let equipment_input = read_user_input();
 
         match equipment_input.trim().to_uppercase().as_str() {
             "T" => {
-                // Return to the game
-                break 'equipment;
+                return;
             }
             "I" => {
-                // Go to inventory
-                break;
+                update_screen(gamebook);
             }
             _ => {
                 println!("Invalid input. Please try again.");
@@ -33,17 +33,24 @@ pub fn handle_equipment(gamebook: &mut GameBook) {
 }
 
 pub fn handle_inventory(gamebook: &mut GameBook) {
-    print!("{}[2J", 27 as char);
+    fn update_screen(gamebook: &mut GameBook) {
+        print!("{}[2J", 27 as char);
+        gamebook.player.inventory.show();
+        println!("Select an item to use or an option to continue:");
+        logger::log_choice("(E)quipment - Re(T)urn to game");        
+    }
 
     loop {
-        gamebook.player.inventory.show();
-        println!("Select an item to use or type T to return to the game.");
+        update_screen(gamebook);
 
         let inventory_input = read_user_input();
 
         if inventory_input.trim().to_uppercase() == "T" {
             // Return to the game
             break;
+        } else if inventory_input.trim().to_uppercase() == "E" {
+            update_screen(gamebook);
+            break;            
         } else if let Ok(item_choice) = inventory_input.trim().parse::<usize>() {
             // Try to use the chosen item
 
@@ -58,7 +65,7 @@ pub fn handle_inventory(gamebook: &mut GameBook) {
                     gamebook.player.equip_item(&item);
                 }
 
-                handle_inventory(gamebook);
+                update_screen(gamebook);
             }
         } else {
             println!("Invalid input. Please try again.");
@@ -74,8 +81,5 @@ pub fn show_options(options: &Vec<Choice>) {
 
     // Print global options
     println!();
-    logger::log_choice("I. Check Inventory");
-    logger::log_choice("E. Check Equipment");
-    logger::log_choice("S. Save");
-    logger::log_choice("X. Exit game");
+    logger::log_choice("(I)nventory - (E)quipment - (C)haracter - (S)ave - E(X)it game");
 }

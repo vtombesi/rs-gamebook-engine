@@ -7,18 +7,17 @@ pub fn run(gamebook: &mut GameBook) {
 
     loop {
         // Clear the terminal
-        // print!("{}[2J", 27 as char);
+        print!("{}[2J", 27 as char);
 
         // Find the current page
         let current_page = gamebook.pages.iter().find(|p| p.id == current_page_id);
 
         if let Some(page) = current_page.cloned() {
-            // Print the text of the current page
             logger::log_narration(format!("{}", page.text));
             println!();
             println!();
 
-            if !gamebook.visited_pages.contains(&current_page_id) {
+            if !gamebook.visited_pages.contains(&current_page_id.clone()) {
                 if let Some(loot) = page.loot.as_ref() {
                     handle_loot(&mut gamebook.player, loot);
                     println!();
@@ -31,6 +30,8 @@ pub fn run(gamebook: &mut GameBook) {
             }
 
             player_actions::show_options(&page.options);
+
+            gamebook.visited_pages.insert(current_page_id.clone());
 
             // Read user input
             let user_input = read_user_input();
@@ -59,8 +60,6 @@ pub fn run(gamebook: &mut GameBook) {
                                 handle_combat(gamebook, &mut creature, selected_option, &mut current_page_id);
                             }
                         }
-
-                        gamebook.visited_pages.insert(current_page_id);
 
                         // Change the current page
                         current_page_id = selected_option.destination;

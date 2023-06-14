@@ -1,3 +1,5 @@
+use std::mem;
+
 use crate::inventory::Inventory;
 use crate::item::Item;
 use crate::equipment::Equipment;
@@ -44,10 +46,12 @@ impl Player {
 
     pub fn equip_item(&mut self, item: &Item) {
         self.equipment.equip_item(item.clone());
+        self.inventory.drop_item(item.clone());
     }
 
     pub fn unequip_item(&mut self, item: Item) {
-        self.equipment.unequip_item(item.item_type);
+        self.equipment.unequip_item(item.clone().item_type);
+        self.inventory.pickup_item(item.clone());
     }
 
     pub fn take_damage(&mut self, damage: i32) {
