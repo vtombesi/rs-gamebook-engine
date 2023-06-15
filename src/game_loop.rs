@@ -48,6 +48,9 @@ pub fn run(gamebook: &mut GameBook) {
             } else if user_input.trim().to_uppercase() == "I" {
                 player_actions::handle_inventory(gamebook);
                 continue;
+            } else if user_input.trim().to_uppercase() == "C" {
+                player_actions::handle_character(gamebook);
+                continue;
             }
 
             if let Ok(choice) = user_input.trim().parse::<usize>() {
@@ -55,10 +58,9 @@ pub fn run(gamebook: &mut GameBook) {
                 if choice > 0 && choice <= page.options.len() {
                     if let Some(selected_option) = page.options.get(choice - 1) {
 
-                        if !gamebook.visited_pages.contains(&current_page_id) {
-                            if let Some(mut creature) = selected_option.creature.clone() {
-                                handle_combat(gamebook, &mut creature, selected_option, &mut current_page_id);
-                            }
+                        // TODO: re-entering a room, a creature once beated should not be spawned again
+                        if let Some(mut creature) = selected_option.creature.clone() {
+                            handle_combat(gamebook, &mut creature, selected_option, &mut current_page_id);
                         }
 
                         // Change the current page
