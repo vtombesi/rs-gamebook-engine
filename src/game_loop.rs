@@ -44,7 +44,9 @@ pub fn run(gamebook: &mut GameBook) {
                 save_game(gamebook, current_page_id);
                 continue;
             } else if user_input.trim().to_uppercase() == "L" {
-                load_game(gamebook);
+                if let Some(page_id) = load_game(gamebook) {
+                    current_page_id = page_id;
+                }
                 continue;
             } else if user_input.trim().to_uppercase() == "E" {
                 player_actions::handle_equipment(gamebook);
