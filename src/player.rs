@@ -63,10 +63,31 @@ impl Player {
     }
 
     pub fn attack(&self) -> i32 {
-        5
+        let base_attack = 5; // Valore di attacco di base
+        let complete_stats = self.clone().get_complete_stats();
+        let strength_modifier = complete_stats.strength;
+
+        let reference_average = 10; // Media di riferimento
+        let modifier_scale = 1; // Scala del modificatore (bonus/malus ogni tre punti)
+
+        let difference = strength_modifier - reference_average;
+        let scaled_modifier = (difference / 3) * modifier_scale;
+
+        let modified_attack = base_attack + scaled_modifier;
+
+        modified_attack
     }
 
     pub fn heal(&mut self, amount: i32) {
         self.health += amount;
+    }
+
+    pub fn get_complete_stats(&mut self) -> Stats {
+        let mut complete_stats = self.stats.clone();
+
+        // Applica eventuali modificatori di equipaggiamento alle statistiche complete
+        complete_stats.apply_equipment_modifiers(&self.equipment);
+
+        complete_stats
     }
 }

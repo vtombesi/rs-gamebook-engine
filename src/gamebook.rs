@@ -4,6 +4,7 @@ use std::collections::HashSet;
 
 use serde::{Deserialize};
 use rand::Rng;
+use rand::seq::SliceRandom;
 use crate::item::Item;
 use crate::Player;
 use crate::player::PlayerImportData;
@@ -13,9 +14,11 @@ impl Creature {
         self.health -= damage;
     }
 
-    pub fn attack(&self) -> i32 {
-        let damage = rand::thread_rng().gen_range(1..10);
-        damage
+    pub fn attack(&self) -> (String, i32) {
+        let mut rng = rand::thread_rng();
+        let random_attack = self.attacks.choose(&mut rng).expect("No attacks available");
+
+        (random_attack.name.clone(), random_attack.damage)
     }
 }
 
@@ -56,12 +59,12 @@ pub struct Creature {
     #[serde(rename = "defeat_text")]
     pub defeat_text: String,
     pub loot: Option<Vec<Item>>,
+    pub attacks: Vec<Attack>,
 }
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Combat {
     pub creature: Creature,
-    pub attacks: Vec<Attack>,
 }
 
 #[derive(Debug, Deserialize, Clone)]

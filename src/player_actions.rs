@@ -37,7 +37,7 @@ pub fn handle_inventory(gamebook: &mut GameBook) {
         print!("{}[2J", 27 as char);
         gamebook.player.inventory.show();
         println!("Select an item to use or an option to continue:");
-        logger::log_choice("(E)quipment - Re(T)urn to game");        
+        logger::log_choice("(E)quipment - Re(T)urn to game");
     }
 
     loop {
@@ -50,7 +50,7 @@ pub fn handle_inventory(gamebook: &mut GameBook) {
             break;
         } else if inventory_input.trim().to_uppercase() == "E" {
             update_screen(gamebook);
-            break;            
+            break;
         } else if let Ok(item_choice) = inventory_input.trim().parse::<usize>() {
             // Try to use the chosen item
 
@@ -72,6 +72,55 @@ pub fn handle_inventory(gamebook: &mut GameBook) {
         }
     }
 }
+
+pub fn handle_character(gamebook: &mut GameBook) {
+    fn update_screen(gamebook: &mut GameBook) {
+        print!("{}[2J", 27 as char);
+
+        // Mostra le statistiche complete del personaggio
+        let complete_stats = gamebook.player.get_complete_stats();
+        println!("--- Character Info ---");
+        println!("Name: {}", "Oberon");
+        println!("Race: {}", "Human");
+        println!("Class: {}", "Wizard");
+        println!("----------------------");
+        println!();
+
+        println!("--- Character Stats ---");
+        println!("Strength: {}", complete_stats.strength);
+        println!("Agility: {}", complete_stats.agility);
+        println!("Spirit: {}", complete_stats.spirit);
+        println!("Luck: {}", complete_stats.luck);
+        println!("----------------------");
+        println!();
+
+        println!("Select an option to continue:");
+        logger::log_choice("(I)nventory - (E)quipment - Re(T)urn to game");
+
+    }
+
+    loop {
+        update_screen(gamebook);
+
+        let equipment_input = read_user_input();
+
+        match equipment_input.trim().to_uppercase().as_str() {
+            "T" => {
+                return;
+            }
+            "I" => {
+                update_screen(gamebook);
+            }
+            "E" => {
+                handle_equipment(gamebook);
+            }
+            _ => {
+                println!("Invalid input. Please try again.");
+            }
+        }
+    }
+}
+
 
 pub fn show_options(options: &Vec<Choice>) {
     // Print the available options

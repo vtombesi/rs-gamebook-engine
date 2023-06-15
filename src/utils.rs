@@ -1,10 +1,11 @@
-use std::fs::File;
+use std::fs::{File, read_to_string};
 use std::io::{self};
 use std::path::Path;
 use std::fs::write;
-use serde_json::{json};
-use crate::item::{Item};
+use serde_json::{json, Value};
+use crate::item::{Item, ItemType};
 use crate::{logger};
+use crate::inventory::Inventory;
 use crate::player::PlayerImportData;
 use crate::stats::Stats;
 
@@ -25,12 +26,16 @@ pub fn handle_combat(gamebook: &mut GameBook, creature: &mut Creature, selected_
 
     let mut player: Player = gamebook.player.clone();
 
+    let mut blocking: bool = false;
+
     logger::log_monster_name(format!("A {} appears before you:", creature.creature_name));
 
     println!("You: {}", player.health);
     println!("{}: {}", creature.creature_name, creature.health);
 
     loop {
+        blocking = false;
+
         println!();
         logger::log_narration("It's your turn. What do you want to do?");
         println!();
@@ -53,6 +58,7 @@ pub fn handle_combat(gamebook: &mut GameBook, creature: &mut Creature, selected_
                 }
                 2 => {
                     println!("You try to block the {}'s attack.", creature.creature_name);
+                    blocking = true;
                     // Add your defense logic here
                 }
                 3 => {
@@ -91,9 +97,9 @@ pub fn handle_combat(gamebook: &mut GameBook, creature: &mut Creature, selected_
         }
 
         // Creature's turn
-        let damage = creature.attack();
+        let (attack_name, damage) = creature.attack();
         player.take_damage(damage);
-        logger::log_damage(format!("The {} attacks you and deals {} damage points.", creature.creature_name, damage));
+        logger::log_damage(format!("The {} attacks you with {} and deals {} damage points.", creature.creature_name, attack_name, damage));
 
         if player.health <= 0 {
             println!("{}", creature.defeat_text);
@@ -113,7 +119,7 @@ pub fn read_user_input() -> String {
     input
 }
 
-pub fn save_game(player: &Player, page_id: usize) {
+pub fn save_game(gamebook: &GameBook, page_id: usize) {
     println!("Select a save slot (1, 2, or 3):");
     let mut save_slot = String::new();
     std::io::stdin().read_line(&mut save_slot).expect("Error reading input");
@@ -129,46 +135,51 @@ pub fn save_game(player: &Player, page_id: usize) {
         }
     };
 
+    let player: Player = gamebook.player.clone();
+
     let save_data = json!({
         "health": player.health,
         "inventory": player.inventory.items,
+        "equipment": player.inventory.items,
+        "visited_pages": gamebook.visited_pages,
         "page_id": page_id,
     });
 
     write(save_file_name, save_data.to_string()).expect("Unable to write save file");
 }
 
-// pub fn load_game(slot: usize) -> Option<(Player, usize)> {
-//     let save_file_name = format!("save{}.json", slot);
-//
-//     if let Ok(save_data) = read_to_string(&save_file_name) {
-//         if let Ok(json_data) = serde_json::from_str::<Value>(&save_data) {
-//             let health = json_data["health"].as_i64().unwrap_or(0) as i32;
-//
-//             let inventory_items = json_data["inventory"]
-//                 .as_array()
-//                 .unwrap_or(&vec![])
-//                 .iter()
-//                 .map(|item| {
-//                     let item_name = item.as_str().unwrap_or("");
-//                     Item::new(item_name.into(), ItemType::SomeType, 1, None)
-//                 })
-//                 .collect();
-//
-//             let page_id = json_data["page_id"].as_u64().unwrap_or(0) as usize;
-//
-//             let player = Player {
-//                 health,
-//                 inventory: Inventory { items: inventory_items },
-//
-//             };
-//
-//             return Some((player, page_id));
-//         }
-//     }
-//
-//     None
-// }
+pub fn load_game(slot: usize) -> Option<(Player, usize)> {
+    let save_file_name = format!("save{}.json", slot);
+
+    if let Ok(save_data) = read_to_string(&save_file_name) {
+        if let Ok(json_data) = serde_json::from_str::<Value>(&save_data) {
+            let health = json_data["health"].as_i64().unwrap_or(0) as i32;
+
+            let inventory_items = json_data["inventory"]
+                .as_array()
+                .unwrap_or(&vec![])
+                .iter()
+                .map(|item| {
+                    let item_name = item.as_str().unwrap_or("");
+                    Item::new(item_name.into(), ItemType::SomeType, 1, None)
+                })
+                .collect();
+
+            let page_id = json_data["page_id"].as_u64().unwrap_or(0) as usize;
+
+            let player = Player {
+                health,
+                inventory: Inventory { items: inventory_items },
+                stats: Stats { },
+
+            };
+
+            return Some((player, page_id));
+        }
+    }
+
+    None
+}
 
 pub fn handle_loot(player: &mut Player, loot: &[Item]) {
     for item in loot {

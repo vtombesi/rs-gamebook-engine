@@ -40,7 +40,7 @@ pub fn run(gamebook: &mut GameBook) {
             if user_input.trim().to_uppercase() == "X" {
                 std::process::exit(0);
             } else if user_input.trim().to_uppercase() == "S" {
-                save_game(&mut gamebook.player, current_page_id);
+                save_game(gamebook, current_page_id);
                 continue;
             } else if user_input.trim().to_uppercase() == "E" {
                 player_actions::handle_equipment(gamebook);
