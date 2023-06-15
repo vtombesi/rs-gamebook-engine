@@ -2,9 +2,11 @@ use std::fs::{File, read_to_string};
 use std::io::{self};
 use std::path::Path;
 use std::fs::write;
-use serde_json::{json, Value};
+use std::fs;
+use serde_json::{json, Map, Value};
 use crate::item::{Item, ItemType};
 use crate::{logger};
+use crate::equipment::{Equipment, EquipmentSlot};
 use crate::inventory::Inventory;
 use crate::player::PlayerImportData;
 use crate::stats::Stats;
@@ -148,38 +150,132 @@ pub fn save_game(gamebook: &GameBook, page_id: usize) {
     write(save_file_name, save_data.to_string()).expect("Unable to write save file");
 }
 
-pub fn load_game(slot: usize) -> Option<(Player, usize)> {
-    let save_file_name = format!("save{}.json", slot);
-
-    if let Ok(save_data) = read_to_string(&save_file_name) {
-        if let Ok(json_data) = serde_json::from_str::<Value>(&save_data) {
-            let health = json_data["health"].as_i64().unwrap_or(0) as i32;
-
-            let inventory_items = json_data["inventory"]
-                .as_array()
-                .unwrap_or(&vec![])
-                .iter()
-                .map(|item| {
-                    let item_name = item.as_str().unwrap_or("");
-                    Item::new(item_name.into(), ItemType::SomeType, 1, None)
+pub fn load_game(gamebook: &mut GameBook) -> Option<usize> {
+    println!("Select a save slot:");
+    let save_files = match fs::read_dir("saves") {
+        Ok(files) => files
+            .filter_map(|file| {
+                file.ok().and_then(|entry| {
+                    entry
+                        .file_name()
+                        .into_string()
+                        .ok()
+                        .and_then(|file_name| file_name.strip_suffix(".json").map(|name| name.to_owned()))
                 })
-                .collect();
-
-            let page_id = json_data["page_id"].as_u64().unwrap_or(0) as usize;
-
-            let player = Player {
-                health,
-                inventory: Inventory { items: inventory_items },
-                stats: Stats { },
-
-            };
-
-            return Some((player, page_id));
+            })
+            .collect::<Vec<String>>(),
+        Err(_) => {
+            println!("No save files found. Unable to load the game.");
+            return None;
         }
+    };
+
+    for (index, file_name) in save_files.iter().enumerate() {
+        println!("{}. {}", index + 1, file_name);
+    }
+
+    let mut slot = String::new();
+    std::io::stdin().read_line(&mut slot).expect("Error reading input");
+    let slot = slot.trim().parse::<usize>().unwrap_or(0);
+
+    if slot > 0 && slot <= save_files.len() {
+        let selected_slot = slot - 1;
+        let save_file_name = format!("saves/{}.json", save_files[selected_slot]);
+
+        if let Ok(save_data) = read_to_string(&save_file_name) {
+            if let Ok(json_data) = serde_json::from_str::<Value>(&save_data) {
+                let health = json_data["health"].as_i64().unwrap_or(0) as i32;
+
+                let inventory_items = json_data["inventory"]
+                    .as_array()
+                    .unwrap_or(&vec![])
+                    .iter()
+                    .map(|item| {
+                        let item_name = item.as_str().unwrap_or("");
+                        let item_type = match item["type"].as_str() {
+                            Some("Usable") => ItemType::Usable,
+                            Some("Armour") => ItemType::Armour,
+                            Some("Weapon") => ItemType::Weapon,
+                            Some("Shield") => ItemType::Shield,
+                            Some("Necklace") => ItemType::Necklace,
+                            Some("Ring") => ItemType::Ring,
+                            Some("Quest") => ItemType::Quest,
+                            _ => {
+                                // Gesto dell'errore: tipo di oggetto non valido
+                                panic!("Invalid item type");
+                            }
+                        };
+                        Item::new(item_name.into(), item_type, 1, None)
+                    })
+                    .collect();
+
+                let page_id = json_data["page_id"].as_u64().unwrap_or(0) as usize;
+
+
+                let default_equipment = serde_json::Map::new();
+                let equipment = json_data["equipment"]
+                    .as_object()
+                    .unwrap_or(&default_equipment);
+
+                let equipped_items: Vec<Item> = equipment
+                    .iter()
+                    .filter_map(|(slot_name, item_value)| {
+                        let item_name = item_value["name"].as_str().unwrap_or("");
+                        let item_type = match slot_name.as_str() {
+                            "armour" => ItemType::Armour,
+                            "weapon" => ItemType::Weapon,
+                            "shield" => ItemType::Shield,
+                            "necklace" => ItemType::Necklace,
+                            "ring" => ItemType::Ring,
+                            _ => return None,
+                        };
+                        Some(Item::new(item_name.into(), item_type, 1, None))
+                    })
+                    .collect();
+
+                gamebook.player.health = health;
+                gamebook.player.inventory.items = inventory_items;
+                gamebook.player.equipment = Equipment {
+                    armour: equipped_items
+                        .iter()
+                        .find(|item| item.item_type == ItemType::Armour)
+                        .cloned(),
+                    weapon: equipped_items
+                        .iter()
+                        .find(|item| item.item_type == ItemType::Weapon)
+                        .cloned(),
+                    shield: equipped_items
+                        .iter()
+                        .find(|item| item.item_type == ItemType::Shield)
+                        .cloned(),
+                    necklace: equipped_items
+                        .iter()
+                        .find(|item| item.item_type == ItemType::Necklace)
+                        .cloned(),
+                    ring: equipped_items
+                        .iter()
+                        .find(|item| item.item_type == ItemType::Ring)
+                        .cloned(),
+                };
+
+                gamebook.visited_pages = json_data["visited_pages"]
+                    .as_array()
+                    .unwrap_or(&vec![])
+                    .iter()
+                    .map(|page| page.as_u64().unwrap_or(0) as usize)
+                    .collect();
+
+                return Some(page_id);
+            }
+        }
+    } else {
+        println!("Invalid save slot. Unable to load the game.");
     }
 
     None
 }
+
+
 
 pub fn handle_loot(player: &mut Player, loot: &[Item]) {
     for item in loot {

@@ -1,6 +1,7 @@
 use crate::{utils::{handle_combat, read_user_input, save_game}, logger, handle_loot};
 use crate::gamebook::GameBook;
 use crate::player_actions;
+use crate::utils::load_game;
 
 pub fn run(gamebook: &mut GameBook) {
     let mut current_page_id = gamebook.start_page;
@@ -41,6 +42,9 @@ pub fn run(gamebook: &mut GameBook) {
                 std::process::exit(0);
             } else if user_input.trim().to_uppercase() == "S" {
                 save_game(gamebook, current_page_id);
+                continue;
+            } else if user_input.trim().to_uppercase() == "L" {
+                load_game(gamebook);
                 continue;
             } else if user_input.trim().to_uppercase() == "E" {
                 player_actions::handle_equipment(gamebook);
