@@ -142,7 +142,7 @@ pub fn save_game(gamebook: &GameBook, page_id: usize) {
     let save_data = json!({
         "health": player.health,
         "inventory": player.inventory.items,
-        "equipment": player.inventory.items,
+        "equipment": player.equipment,
         "visited_pages": gamebook.visited_pages,
         "page_id": page_id,
     });
